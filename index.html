@@ -124,9 +124,24 @@
     @keyframes flow  { to { stroke-dashoffset: -222.4; } }
     @keyframes sheen { to { stroke-dashoffset: -220; } }
 
+    /* Vorstellung zwischen Video und Profil */
+    .intro { min-height: calc(100svh - 2rem); display: grid; align-items: center; border-top: none; padding: 4rem 0; }
+    .intro:focus { outline: none; }
+    .intro-grid { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: clamp(2rem, 6vw, 5rem); align-items: center; }
+    .intro-text { text-shadow: 0 0 12px rgba(13,20,27,.95), 0 0 4px rgba(13,20,27,.9); }
+    .intro-name { margin: 0; font-size: clamp(2rem, 5.2vw, 4rem); font-weight: 200; letter-spacing: .14em; line-height: 1.1; text-transform: uppercase; color: var(--ink); }
+    .intro-role { margin: .7rem 0 1.2rem; font-size: clamp(1rem, 2.3vw, 1.6rem); font-weight: 300; letter-spacing: .06em; line-height: 1.3; text-transform: uppercase; color: var(--soft); }
+    .intro-text p:not(.intro-role) { margin: 0 0 .6rem; max-width: 36rem; font-weight: 300; }
+    .intro-line { max-width: 36rem; height: 1px; margin: 1.6rem 0 1rem; background: linear-gradient(90deg, rgba(106,163,255,.85), rgba(106,163,255,.12)); }
+    .intro-links { max-width: 36rem; display: flex; gap: .9rem; justify-content: flex-end; }
+    .intro-links a { width: 2.5rem; height: 2.5rem; display: grid; place-items: center; color: var(--soft); border-radius: 8px; transition: color .2s, transform .2s, background .2s; }
+    .intro-links a:hover { color: #fff; background: rgba(106,163,255,.15); transform: translateY(-2px); }
+    .intro-links svg { width: 1.7rem; height: 1.7rem; display: block; }
+    .intro-photo { width: clamp(11rem, 22vw, 16rem); aspect-ratio: 5 / 7; border-radius: 10px; overflow: hidden; border: 1px solid rgba(120,175,230,.4); box-shadow: 0 16px 44px rgba(0,0,0,.4), 0 0 30px rgba(34,160,255,.12); }
+    .intro-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 25%; display: block; transform: scaleX(-1); }
     .profile { padding: 5rem 0 4rem; }
     .profile-head { text-align: center; margin-bottom: 3.5rem; }
-    h1 {
+    h1, h2.h1like {
       margin: 0 0 1rem; font-size: clamp(1.5rem, 4.6vw, 3rem); line-height: 1.2;
       font-weight: 300; letter-spacing: .08em; text-transform: uppercase;
     }
@@ -147,6 +162,26 @@
     @keyframes blink { to { visibility: hidden; } }
     .term-note { position: relative; z-index: 1; margin: 0; padding: 0 1.1rem .8rem; font: 400 .72rem/1.4 var(--font); color: rgba(154,168,182,.7); }
 
+    /* Lebenslauf: ein Kasten pro Station, neueste oben */
+    /* versetzt: ungerade links, gerade rechts; dazwischen läuft die Röhre */
+    .cv { position: relative; display: grid; row-gap: 4.5rem; padding: 2.4rem 0 3.2rem; }
+    .cv-svg {
+      position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; overflow: visible;
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 40px, #000 calc(100% - 50px), transparent 100%);
+              mask-image: linear-gradient(to bottom, transparent 0, #000 40px, #000 calc(100% - 50px), transparent 100%);
+    }
+    .cv-card { width: fit-content; min-width: min(100%, 21rem); max-width: min(calc(100% - 1.8rem), 41rem); padding: 1.5rem 2rem 1.6rem; }
+    .cv-card:nth-of-type(odd)  { justify-self: start; margin-left: 1.8rem; }
+    .cv-card:nth-of-type(even) { justify-self: end;   margin-right: 1.8rem; }
+    .cv-card > * { position: relative; z-index: 1; }
+    .cv-date { margin: 0 0 1rem; font-size: .9rem; font-weight: 300; letter-spacing: .06em; text-transform: uppercase; color: var(--ink); }
+    .cv-title { margin: 0; font-size: 1.5rem; line-height: 1.3; font-weight: 400; color: var(--soft); }
+    .cv-where { margin: .3rem 0 0; font-size: 1.05rem; color: var(--muted); }
+    .cv-list { margin: 1.1rem 0 0; padding: 0; list-style: none; display: grid; gap: .65rem; }
+    .cv-list li { position: relative; padding-left: 1.5rem; }
+    .cv-list li::before { content: ""; position: absolute; left: .2rem; top: .62em; width: .42rem; height: .42rem; border-radius: 50%; background: var(--accent); }
+    .cv-list .h { display: block; font-weight: 500; color: var(--soft); }
+    .cv-list .d { display: block; font-weight: 300; color: var(--ink); }
     /* Projekte: Text + Terminal gemeinsam in einem Kasten */
     .about-frame.proj-frame { max-width: none; margin-bottom: 0; }
     .proj-card { padding: 1.8rem 2rem; }
@@ -322,10 +357,17 @@
     @media (max-width: 760px) {
       .frame { height: min(62svh, 34rem); }
       .profile { padding-top: 3rem; }
+      .intro { padding: 3rem 0; }
+      .intro-grid { grid-template-columns: 1fr; gap: 1.8rem; }
+      .intro-photo { order: -1; width: 11rem; }
+      .intro-links { justify-content: flex-start; }
       .about { grid-template-columns: 1fr; gap: 1.1rem; padding: .5rem; }
       .photo { min-height: 0; height: 16rem; }
       .about-text { padding: 0 .9rem .8rem; }
       .proj-card { padding: 1.3rem 1.2rem; }
+      .cv { row-gap: 3rem; }
+      .cv-card { width: calc(100% - 1.8rem); min-width: 0; max-width: none; padding: 1.2rem 1.2rem 1.3rem; }
+      .cv-title { font-size: 1.25rem; }
       .proj-grid { grid-template-columns: 1fr; gap: 1.8rem; }
       .term { justify-self: stretch; max-width: none; }
       .about p { text-align: left; }
@@ -349,14 +391,35 @@
       </video>
       <button class="sound" id="sound" type="button" aria-pressed="false">Ton an</button>
     </div>
-    <a class="btn" href="#profil">Abtauchen</a>
+    <a class="btn" href="#intro">Abtauchen</a>
   </section>
 
   <div class="stage">
   <main>
+    <section class="intro" id="intro" aria-label="Vorstellung">
+      <div class="intro-grid">
+        <div class="intro-text">
+          <h1 class="intro-name">Toni Kiesel</h1>
+          <p class="intro-role">Angehender Fachinformatiker für Systemintegration</p>
+          <p>Ich komme aus dem Bäckerhandwerk und starte gerade in die IT, mit dem Ziel, Fachinformatiker für Systemintegration zu werden.</p>
+          <p>Technik verstehen, ausprobieren und Probleme Schritt für Schritt lösen: Das treibt mich dabei jeden Tag an.</p>
+          <div class="intro-line"></div>
+          <div class="intro-links">
+            <a href="https://github.com/tonikiesel" target="_blank" rel="noopener" aria-label="Toni Kiesel auf GitHub">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            </a>
+            <a href="mailto:kiesel.99@protonmail.com" aria-label="E-Mail an Toni Kiesel">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 7l8.5 6.2L20.5 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="intro-photo"><img src="toni.jpg" width="600" height="600" alt="Porträt von Toni Kiesel"></div>
+      </div>
+    </section>
+
     <header class="profile" id="profil">
       <div class="profile-head">
-        <h1>Profil – Moin, ich bin Toni</h1>
+        <h2 class="h1like">Profil – Moin, ich bin Toni</h2>
         <p class="keywords">Analytisch, lösungsorientiert, detailgenau und gewissenhaft</p>
       </div>
 
@@ -376,6 +439,46 @@
         </div>
       </div>
     </header>
+
+    <section id="lebenslauf">
+      <h2>Lebenslauf</h2>
+      <div class="cv">
+      <article class="glass cv-card">
+        <p class="cv-date">Juli 2026 – Juli 2028</p>
+        <h3 class="cv-title">Fachinformatiker für Systemintegration (IHK), Umschulung</h3>
+        <p class="cv-where">bei WBS Training SE, Finsterwalde</p>
+      </article>
+      <article class="glass cv-card">
+        <p class="cv-date">September 2027 – Februar 2028</p>
+        <h3 class="cv-title">Betriebliches (Pflicht-)Praktikum – 6 Monate</h3>
+        <p class="cv-where">in einem Unternehmen mit Ausbildereignung</p>
+      </article>
+      <article class="glass cv-card">
+        <p class="cv-date">März 2026 – Mai 2026</p>
+        <h3 class="cv-title">IT-Vorbereitungskurs</h3>
+        <p class="cv-where">bei WBS Training SE, Finsterwalde</p>
+        <ul class="cv-list">
+            <li><span class="h">Grundlagen, Algorithmen und Datenstrukturen:</span><span class="d">Essenzielle Programmierkonzepte, Datenstrukturen und logische Problemlösung</span></li>
+            <li><span class="h">Grundlagen der digitalen Sicherheit:</span><span class="d">Grundwissen über Verschlüsselung, Bedrohung und Schutzmaßnahmen in der IT</span></li>
+            <li><span class="h">Grundlagen der Netzwerktechnik:</span><span class="d">Verständnis von Netzwerkarchitekturen, Protokollen und Datenübertragung</span></li>
+        </ul>
+      </article>
+      <article class="glass cv-card">
+        <p class="cv-date">August 2019 – August 2025</p>
+        <h3 class="cv-title">Bäckergeselle</h3>
+        <p class="cv-where">bei Bäckerei Bubner, Doberlug-Kirchhain</p>
+        <ul class="cv-list">
+            <li><span class="d">Verantwortung für die Organisation und Optimierung der Produktionsabläufe</span></li>
+            <li><span class="d">Sicherstellung der Qualität und Frische der Produkte</span></li>
+        </ul>
+      </article>
+      <article class="glass cv-card">
+        <p class="cv-date">August 2016 – August 2019</p>
+        <h3 class="cv-title">Ausbildung zum Bäcker</h3>
+        <p class="cv-where">bei Bäckerei Bubner, Doberlug-Kirchhain</p>
+      </article>
+      </div>
+    </section>
 
     <section id="projekte">
       <h2>Projekte</h2>
@@ -503,7 +606,7 @@
           busy = true;
           dive.className = 'dive rise';
           setTimeout(function () {
-            var t = document.getElementById('profil');
+            var t = document.getElementById('intro');
             window.scrollTo({ top: t.getBoundingClientRect().top + window.pageYOffset, behavior: 'instant' });
             t.setAttribute('tabindex', '-1');
             t.focus({ preventScroll: true });
@@ -911,6 +1014,140 @@
         }
       }
       run();
+    })();
+  </script>
+  <script>
+    (function () {
+      /* Lebenslauf-Röhre: Schlangenlinie um die Kästen, Flüssigkeit füllt sich mit dem Scrollen */
+      var cv = document.querySelector('.cv');
+      if (!cv) return;
+      var NS = 'http://www.w3.org/2000/svg';
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var svg, pathEl, maskPath, bub, sheen, dot, total = 0, knots = [], cf = 0, tf = 0, running = false;
+
+      function el(name, attrs, parent) {
+        var e = document.createElementNS(NS, name);
+        for (var k in attrs) e.setAttribute(k, attrs[k]);
+        if (parent) parent.appendChild(e);
+        return e;
+      }
+      function rounded(pts, r) {
+        var d = 'M' + pts[0][0] + ',' + pts[0][1];
+        for (var i = 1; i < pts.length - 1; i++) {
+          var a = pts[i - 1], p = pts[i], b = pts[i + 1];
+          var l1 = Math.hypot(p[0] - a[0], p[1] - a[1]), l2 = Math.hypot(b[0] - p[0], b[1] - p[1]);
+          var rr = Math.min(r, l1 / 2, l2 / 2);
+          d += ' L' + (p[0] + (a[0] - p[0]) / l1 * rr).toFixed(1) + ',' + (p[1] + (a[1] - p[1]) / l1 * rr).toFixed(1) +
+               ' Q' + p[0] + ',' + p[1] + ' ' + (p[0] + (b[0] - p[0]) / l2 * rr).toFixed(1) + ',' + (p[1] + (b[1] - p[1]) / l2 * rr).toFixed(1);
+        }
+        var last = pts[pts.length - 1];
+        return d + ' L' + last[0].toFixed(1) + ',' + last[1].toFixed(1);
+      }
+      /* Bildschirmposition -> Länge entlang der Röhre (Stück für Stück zwischen den Knoten) */
+      function mapY(y) {
+        if (y <= knots[0][0]) return knots[0][1];
+        for (var i = 1; i < knots.length; i++) {
+          if (y <= knots[i][0]) {
+            var a = knots[i - 1], b = knots[i], span = b[0] - a[0];
+            return span <= 0 ? b[1] : a[1] + (b[1] - a[1]) * (y - a[0]) / span;
+          }
+        }
+        return knots[knots.length - 1][1];
+      }
+      function target() { return mapY(window.innerHeight * 0.6 - cv.getBoundingClientRect().top); }
+      function draw(L) {
+        if (!pathEl) return;
+        maskPath.style.strokeDasharray = L.toFixed(1) + ' ' + (total + 40);
+        bub.style.strokeDashoffset = (-L * 1.3).toFixed(1);
+        sheen.style.strokeDashoffset = (-L * 0.6).toFixed(1);
+        if (!reduce && L > 3 && L < total - 3) {
+          var pt = pathEl.getPointAtLength(L);
+          dot.setAttribute('transform', 'translate(' + pt.x.toFixed(1) + ' ' + pt.y.toFixed(1) + ')');
+          dot.style.opacity = 1;
+        } else { dot.style.opacity = 0; }
+      }
+      function frame() {
+        cf += (tf - cf) * 0.14;
+        if (Math.abs(tf - cf) < 0.3) { cf = tf; running = false; }
+        draw(cf);
+        if (running) requestAnimationFrame(frame);
+      }
+      function onScroll() {
+        if (!pathEl || reduce) return;
+        tf = target();
+        if (!running) { running = true; requestAnimationFrame(frame); }
+      }
+
+      function build() {
+        var cards = cv.querySelectorAll('.cv-card');
+        var W = cv.clientWidth, H = cv.clientHeight;
+        if (!W || !H || cards.length < 2) return;
+        if (svg && svg.parentNode) svg.parentNode.removeChild(svg);
+        svg = el('svg', { 'class': 'cv-svg', viewBox: '0 0 ' + W + ' ' + H, 'aria-hidden': 'true', focusable: 'false' }, cv);
+
+        var xL = 9, xR = W - 9, ys = [], gaps = [];
+        for (var i = 0; i < cards.length - 1; i++) {
+          var b = cards[i].offsetTop + cards[i].offsetHeight, t = cards[i + 1].offsetTop;
+          gaps.push([b, t]); ys.push(Math.round((b + t) / 2));
+        }
+        var pts = [[xL, 0]];
+        ys.forEach(function (y, i) {
+          var from = (i % 2 === 0) ? xL : xR, to = (i % 2 === 0) ? xR : xL;
+          pts.push([from, y]); pts.push([to, y]);
+        });
+        pts.push([pts[pts.length - 1][0], H]);
+        var lc = [0];
+        for (var j = 1; j < pts.length; j++) lc.push(lc[j - 1] + Math.abs(pts[j][0] - pts[j - 1][0]) + Math.abs(pts[j][1] - pts[j - 1][1]));
+        var d = rounded(pts, 28);
+
+        var defs = el('defs', {}, svg);
+        var gl = el('radialGradient', { id: 'cvGlow' }, defs);
+        el('stop', { offset: '0', 'stop-color': '#22b4ff', 'stop-opacity': '.8' }, gl);
+        el('stop', { offset: '1', 'stop-color': '#22b4ff', 'stop-opacity': '0' }, gl);
+        var mask = el('mask', { id: 'cvMask', maskUnits: 'userSpaceOnUse', x: 0, y: 0, width: W, height: H }, defs);
+        maskPath = el('path', { d: d, fill: 'none', stroke: '#fff', 'stroke-width': 40 }, mask);
+
+        /* weicher Schatten, leere Röhre (Glas), dunkler Kern */
+        [[28, 0.10], [23, 0.14], [19, 0.20]].forEach(function (sh) {
+          el('path', { d: d, fill: 'none', stroke: 'rgba(0,0,0,' + sh[1] + ')', 'stroke-width': sh[0], transform: 'translate(4 7)' }, svg);
+        });
+        pathEl = el('path', { d: d, fill: 'none', stroke: 'rgba(150,200,255,.22)', 'stroke-width': 16 }, svg);
+        el('path', { d: d, fill: 'none', stroke: 'rgba(8,18,30,.85)', 'stroke-width': 12 }, svg);
+        total = pathEl.getTotalLength();
+
+        /* Flüssigkeit: nur bis zur Front sichtbar (Maske) */
+        var fg = el('g', { mask: 'url(#cvMask)' }, svg);
+        el('path', { d: d, fill: 'none', stroke: '#1ea7ff', 'stroke-opacity': '.75', 'stroke-width': 8 }, fg);
+        el('path', { d: d, fill: 'none', stroke: 'rgba(210,245,255,.3)', 'stroke-width': 1.6 }, fg);
+        sheen = el('path', { d: d, fill: 'none', stroke: 'rgba(160,225,255,.45)', 'stroke-width': 8, 'stroke-linecap': 'round', 'stroke-dasharray': '46 174' }, fg);
+        bub = el('path', { d: d, fill: 'none', stroke: 'rgba(235,252,255,.9)', 'stroke-width': 4, 'stroke-linecap': 'round', 'stroke-dasharray': '0.1 61 0.1 23 0.1 97 0.1 41' }, fg);
+
+        /* Kupplungen auf den waagerechten Stücken */
+        ys.forEach(function (y, k) {
+          var x = xL + (xR - xL) * (k % 2 === 0 ? 0.24 : 0.76);
+          el('rect', { x: x - 4, y: y - 12, width: 8, height: 24, rx: 2 }, svg)
+            .setAttribute('style', 'fill:rgba(14,30,46,.96);stroke:rgba(190,225,255,.45);stroke-width:1.1');
+        });
+
+        /* Front der Flüssigkeit: heller Punkt */
+        dot = el('g', { style: 'opacity:0' }, svg);
+        el('circle', { r: 16, fill: 'url(#cvGlow)' }, dot);
+        el('circle', { r: 4.5, fill: '#e6f8ff' }, dot);
+
+        var k2 = total / lc[lc.length - 1];
+        knots = [[0, 0]];
+        gaps.forEach(function (g, i) { knots.push([g[0], lc[2 * i + 1] * k2]); knots.push([g[1], lc[2 * i + 2] * k2]); });
+        knots.push([H, total]);
+
+        cf = tf = reduce ? total : target();
+        draw(cf);
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', function () { build(); });
+      if ('ResizeObserver' in window) new ResizeObserver(function () { build(); }).observe(cv);
+      (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(build);
+      build();
     })();
   </script>
 </body>
