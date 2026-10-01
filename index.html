@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Toni Kiesel – Profil</title>
   <meta name="description" content="Profil von Toni Kiesel: analytisch, lösungsorientiert, detailgenau und gewissenhaft. Interesse an IT und Systemintegration.">
+  <script>
+    document.documentElement.classList.add('js');
+    try { if (sessionStorage.getItem('profilFreigeschaltet') === '1') document.documentElement.classList.add('unlocked'); } catch (e) {}
+  </script>
   <style>
     :root {
       color-scheme: dark;
@@ -102,8 +106,8 @@
 
     /* Hintergrund des Profils: feine Linien und leuchtende Punkte */
     .stage { position: relative; }
-    .stage::before, .start::before, .clip::before {
-      content: ""; position: absolute; inset: 0 0 auto 0; height: 44rem; pointer-events: none;
+    .backdrop {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
       background:
         linear-gradient(rgba(34,180,255,.22), rgba(34,180,255,0)) 9% 0 / 1px 11rem no-repeat,
         linear-gradient(rgba(34,180,255,.18), rgba(34,180,255,0)) 34% 0 / 1px 7rem no-repeat,
@@ -157,13 +161,9 @@
     .project p { margin: 0; color: var(--muted); }
     /* Startbild: Titel mit tropfender Kühlflüssigkeit, danach das Video */
     .start {
-      position: relative; min-height: 100vh; min-height: 100svh; overflow: hidden; background: #0d141b;
+      position: relative; min-height: 100vh; min-height: 100svh; overflow: hidden; border-top: 0;
       display: grid; place-items: center; padding: 2rem 1.5rem;
     }
-    .start::before, .clip::before { inset: 0; height: auto; z-index: 0; }
-    .clip::before { transform: scaleX(-1); }
-    .start > *, .clip > * { position: relative; z-index: 1; }
-    .start > .cue { position: absolute; }
     .drip-title {
       position: relative; margin: 0; text-align: center; color: #c8f0ff;
       font-size: clamp(2.6rem, 6vw, 5rem); line-height: 1.1; font-weight: 800; letter-spacing: -0.035em;
@@ -202,9 +202,19 @@
 
     .clip {
       min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 1.8rem; padding: 2rem 1.5rem; background: #0d141b; color: #f2f4f6; position: relative; overflow: hidden;
+      gap: 1.8rem; padding: 2rem 1.5rem; color: #f2f4f6; position: relative; overflow: hidden; border-top: 0;
     }
-    .clip .btn { background: #f2f4f6; color: #0d141b; }
+    .js .clip .frame, .js .clip .btn { opacity: 0; transform: translateY(26px); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.7,.3,1); }
+    .js .clip .btn { transition-delay: .25s; }
+    .js .clip.in .frame, .js .clip.in .btn { opacity: 1; transform: none; }
+    /* Freischaltung: Profil erst nach dem Video */
+    html.js:not(.unlocked) .stage { display: none; }
+    .btn.locked { background: transparent; color: var(--soft); box-shadow: inset 0 0 0 1px rgba(143,195,255,.55); }
+    .btn.locked:hover { filter: none; }
+    .btn.ready { animation: ready 1.6s ease-out 3; }
+    .btn.nope { animation: nope .4s; }
+    @keyframes ready { 0%, 100% { box-shadow: 0 0 0 0 rgba(106,163,255,.65); } 50% { box-shadow: 0 0 0 14px rgba(106,163,255,0); } }
+    @keyframes nope { 20%, 60% { transform: translateX(-6px); } 40%, 80% { transform: translateX(6px); } }
     .frame { position: relative; height: min(66vh, 42rem); height: min(66svh, 42rem); aspect-ratio: 9 / 16; border-radius: 10px; overflow: hidden; background: #000; }
     .frame video { width: 100%; height: 100%; object-fit: cover; display: block; }
     .sound {
@@ -256,6 +266,8 @@
       .net .packet { display: none; }
       .dive { display: none; }
       .cue span { animation: none; opacity: 1; }
+      .btn.ready, .btn.nope { animation: none; }
+      .js .clip .frame, .js .clip .btn { opacity: 1; transform: none; transition: none; }
       html { scroll-behavior: auto; }
     }
 
@@ -269,6 +281,7 @@
   </style>
 </head>
 <body>
+  <div class="backdrop" aria-hidden="true"></div>
   <div class="dive" id="dive" aria-hidden="true"><div class="coolant"></div></div>
 
   <section class="start" aria-label="Einleitung">
@@ -278,7 +291,7 @@
 
   <section class="clip" id="video" aria-label="Video">
     <div class="frame">
-      <video id="opener" muted loop playsinline preload="auto" poster="vorschau.jpg">
+      <video id="opener" muted playsinline preload="auto" poster="vorschau.jpg">
         <source src="video.mp4" type="video/mp4">
       </video>
       <button class="sound" id="sound" type="button" aria-pressed="false">Ton an</button>
@@ -357,9 +370,9 @@
       else if ('IntersectionObserver' in window) {
         new IntersectionObserver(function (e) {
           if (e[0].isIntersecting) {
-            v.currentTime = 0;
+            if (v.ended) v.currentTime = 0;
             var started = v.play();
-            if (started && started.catch) { started.catch(function () { v.setAttribute('controls', ''); }); }
+            if (started && started.catch) { started.catch(function (err) { if (err && err.name === 'NotAllowedError') v.setAttribute('controls', ''); }); }
           } else { v.pause(); }
         }, { threshold: 0.6 }).observe(v);
       } else { v.play(); }
@@ -369,8 +382,58 @@
         btn.setAttribute('aria-pressed', String(!v.muted));
         if (v.paused) v.play();
       });
-      var dive = document.getElementById('dive');
+      /* Freischaltung: Das Profil gibt es erst, wenn das Video angesehen wurde */
+      var root = document.documentElement;
       var go = document.querySelector('.clip .btn');
+      var maxTime = 0;
+      function isUnlocked() { return root.classList.contains('unlocked'); }
+      function lockedLabel() {
+        var d = v.duration;
+        go.textContent = (isFinite(d) && d > 0 && maxTime > 0.1)
+          ? 'Noch ' + Math.max(1, Math.ceil(d - maxTime)) + ' s ansehen'
+          : 'Erst das Video ansehen';
+      }
+      function unlock() {
+        if (isUnlocked() && !go.classList.contains('locked')) return;
+        root.classList.add('unlocked');
+        go.classList.remove('locked');
+        go.removeAttribute('aria-disabled');
+        go.textContent = 'Abtauchen';
+        go.classList.add('ready');
+        try { sessionStorage.setItem('profilFreigeschaltet', '1'); } catch (e) {}
+      }
+      if (go) {
+        if (isUnlocked()) { go.textContent = 'Abtauchen'; }
+        else {
+          go.classList.add('locked');
+          go.setAttribute('aria-disabled', 'true');
+          lockedLabel();
+          go.addEventListener('click', function (e) {
+            if (!go.classList.contains('locked')) return;
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            go.classList.remove('nope');
+            void go.offsetWidth;
+            go.classList.add('nope');
+          });
+          v.addEventListener('timeupdate', function () {
+            if (!v.seeking && v.currentTime > maxTime) maxTime = v.currentTime;
+            if (isFinite(v.duration) && v.duration - maxTime < 0.25 && maxTime > 0) { unlock(); return; }
+            lockedLabel();
+          });
+          v.addEventListener('seeking', function () {
+            if (!isUnlocked() && v.currentTime > maxTime + 0.6) v.currentTime = maxTime;
+          });
+          v.addEventListener('ended', unlock);
+          /* Notausgang: Lässt sich das Video nicht laden, wird trotzdem freigeschaltet */
+          var srcEl = v.querySelector('source');
+          if (srcEl) srcEl.addEventListener('error', unlock);
+          v.addEventListener('error', unlock);
+          setTimeout(function () { if (v.readyState === 0 && !isUnlocked()) unlock(); }, 8000);
+        }
+      }
+      v.addEventListener('click', function () { if (v.paused) { if (v.ended) v.currentTime = 0; v.play(); } });
+      var dive = document.getElementById('dive');
       var busy = false;
       if (!reduce && dive && go) {
         var coolant = dive.firstElementChild;
@@ -419,7 +482,7 @@
         if (!queued) { queued = true; requestAnimationFrame(draw); }
         document.documentElement.classList.add('has-ring');
         ring.classList.add('show');
-        var t = e.target.closest ? e.target.closest('a,button,.btn,video[controls]') : null;
+        var t = e.target.closest ? e.target.closest('a:not(.locked),button,.btn:not(.locked),video[controls]') : null;
         ring.classList.toggle('link', !!t);
       });
       document.addEventListener('mousedown', function () { ring.classList.add('down'); });
@@ -433,7 +496,7 @@
       document.addEventListener('click', function (e) {
         if (e.detail === 0) return; /* per Tastatur ausgelöst: keine Welle */
         var w = document.createElement('div');
-        var onLink = e.target.closest && e.target.closest('a,button,.btn,video[controls]');
+        var onLink = e.target.closest && e.target.closest('a:not(.locked),button,.btn:not(.locked),video[controls]');
         w.className = 'wave' + (onLink ? ' link' : '');
         w.style.left = e.clientX + 'px';
         w.style.top = e.clientY + 'px';
@@ -503,6 +566,17 @@
       drips();
       var timer;
       window.addEventListener('resize', function () { clearTimeout(timer); timer = setTimeout(drips, 200); });
+    })();
+  </script>
+  <script>
+    (function () {
+      var clip = document.getElementById('video');
+      if (!clip) return;
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (e, o) {
+          if (e[0].isIntersecting) { clip.classList.add('in'); o.disconnect(); }
+        }, { threshold: 0.25 }).observe(clip);
+      } else { clip.classList.add('in'); }
     })();
   </script>
 </body>
