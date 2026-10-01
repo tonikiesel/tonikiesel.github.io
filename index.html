@@ -3,20 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Toni Kiesel – Praktikum Fachinformatiker für Systemintegration</title>
-  <meta name="description" content="Toni Kiesel sucht einen Praktikumsplatz als Fachinformatiker für Systemintegration.">
+  <title>Toni Kiesel – Profil</title>
+  <meta name="description" content="Profil von Toni Kiesel: analytisch, lösungsorientiert, detailgenau und gewissenhaft. Interesse an IT und Systemintegration.">
   <style>
     :root {
-      --bg: #f2f4f6;
-      --ink: #17212b;
-      --muted: #55616d;
-      --line: #cfd6dd;
-      --accent: #1f5fbf;
+      color-scheme: dark;
+      --bg: #0d141b;
+      --ink: #e9eef3;
+      --muted: #9aa8b6;
+      --line: #2a3846;
+      --accent: #6aa3ff;
+      --soft: #8fc3ff;
       --packet: #f08a1c;
       --font: "Avenir Next", "Segoe UI Variable Display", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    }
-    @media (prefers-color-scheme: dark) {
-      :root { --bg: #141a21; --ink: #e9edf1; --muted: #9aa6b2; --line: #2d3742; --accent: #6aa3ff; }
     }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -26,23 +25,50 @@
     }
     a { color: var(--accent); text-underline-offset: 3px; }
     a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
-    main { max-width: 64rem; margin: 0 auto; padding: 0 1.5rem; }
+    main { position: relative; z-index: 1; max-width: 64rem; margin: 0 auto; padding: 0 1.5rem; }
 
-    .hero {
-      display: grid; grid-template-columns: 1.1fr 1fr; gap: 2rem;
-      align-items: center; min-height: 80vh; padding: 3rem 0;
+    /* Hintergrund des Profils: feine Linien und leuchtende Punkte */
+    .stage { position: relative; }
+    .stage::before {
+      content: ""; position: absolute; inset: 0 0 auto 0; height: 44rem; pointer-events: none;
+      background:
+        linear-gradient(rgba(34,180,255,.22), rgba(34,180,255,0)) 9% 0 / 1px 11rem no-repeat,
+        linear-gradient(rgba(34,180,255,.18), rgba(34,180,255,0)) 34% 0 / 1px 7rem no-repeat,
+        linear-gradient(rgba(34,180,255,.22), rgba(34,180,255,0)) 78% 0 / 1px 13rem no-repeat,
+        linear-gradient(rgba(34,180,255,.16), rgba(34,180,255,0)) 94% 0 / 1px 8rem no-repeat,
+        radial-gradient(circle 7px at 9% 11rem, rgba(34,180,255,.75), rgba(34,180,255,0)),
+        radial-gradient(circle 6px at 34% 7rem, rgba(34,180,255,.6), rgba(34,180,255,0)),
+        radial-gradient(circle 8px at 78% 13rem, rgba(34,180,255,.75), rgba(34,180,255,0)),
+        radial-gradient(circle 6px at 94% 8rem, rgba(34,180,255,.55), rgba(34,180,255,0)),
+        radial-gradient(circle 14rem at 20% 20%, rgba(34,180,255,.08), rgba(34,180,255,0)),
+        radial-gradient(circle 16rem at 85% 55%, rgba(34,180,255,.07), rgba(34,180,255,0));
     }
+
+    .profile { padding: 5rem 0 4rem; }
+    .profile-head { text-align: center; margin-bottom: 3.5rem; }
     h1 {
-      font-size: clamp(2.8rem, 8vw, 5.2rem); line-height: 1; margin: 0 0 1.2rem;
-      font-weight: 800; letter-spacing: -0.04em;
+      margin: 0 0 1rem; font-size: clamp(1.5rem, 4.6vw, 3rem); line-height: 1.2;
+      font-weight: 300; letter-spacing: .08em; text-transform: uppercase;
     }
-    .lead { font-size: 1.25rem; max-width: 30rem; margin: 0 0 1.8rem; color: var(--muted); }
+    .keywords {
+      margin: 0; font-size: clamp(.8rem, 1.9vw, 1.05rem); font-weight: 300; line-height: 1.6;
+      letter-spacing: .14em; text-transform: uppercase; color: var(--soft);
+    }
+    .profile-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 3rem; align-items: center; }
+    .name-row { display: flex; align-items: center; gap: 1.4rem; margin-bottom: 1.8rem; }
+    .name { margin: 0; font-size: clamp(2.2rem, 5.5vw, 3.4rem); line-height: 1.05; font-weight: 800; letter-spacing: -0.03em; }
+    .portrait {
+      flex: none; display: block; width: clamp(7rem, 26vw, 13rem); height: auto; aspect-ratio: 1; object-fit: cover;
+      border: 4px solid var(--accent); border-radius: 12px; background: var(--line);
+      outline: 1px solid var(--line); outline-offset: 5px;
+    }
+    .about { margin-bottom: 1.8rem; }
+    .about p { margin: 0 0 1rem; max-width: 36rem; text-align: justify; hyphens: auto; font-weight: 300; }
     .btn {
-      display: inline-block; padding: .75rem 1.4rem; background: var(--accent); color: #fff;
+      display: inline-block; padding: .75rem 1.4rem; background: var(--accent); color: #0c1218;
       font-weight: 600; text-decoration: none; border-radius: 6px;
     }
     .btn:hover { filter: brightness(1.1); }
-    @media (prefers-color-scheme: dark) { .btn { color: #0c1218; } }
 
     .net { width: 100%; height: auto; }
     .net text { fill: var(--muted); font: 600 12px var(--font); text-anchor: middle; }
@@ -125,7 +151,9 @@
       .frame { order: -1; height: min(62svh, 34rem); }
       .intro-title { max-width: none; text-align: center; margin-bottom: 1.2rem; }
       .intro-text { text-align: center; }
-      .hero { grid-template-columns: 1fr; min-height: 0; padding-top: 2rem; }
+      .profile { padding-top: 3rem; }
+      .profile-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .about p { text-align: left; }
       .net { max-width: 22rem; }
     }
   </style>
@@ -146,13 +174,26 @@
     </div>
   </section>
 
+  <div class="stage">
   <main>
-    <header class="hero" id="profil">
-      <div>
-        <h1>Toni Kiesel</h1>
-        <p class="lead">Ich suche einen Praktikumsplatz als Fachinformatiker für Systemintegration.</p>
-        <a class="btn" href="#kontakt">Kontakt aufnehmen</a>
+    <header class="profile" id="profil">
+      <div class="profile-head">
+        <h1>Profil – Moin, ich bin Toni</h1>
+        <p class="keywords">Analytisch, lösungsorientiert, detailgenau und gewissenhaft</p>
       </div>
+
+      <div class="profile-grid">
+        <div>
+          <div class="name-row">
+            <img class="portrait" src="toni.jpg" width="600" height="600" alt="Porträt von Toni Kiesel">
+          </div>
+          <div class="about">
+            <p>Nach meiner Ausbildung zum Bäcker habe ich mehrere Jahre als Bäckergeselle gearbeitet. Dort habe ich gelernt, präzise zu arbeiten, Abläufe zu koordinieren und auch unter Zeitdruck auf Qualität zu achten. Das hat mich detailgenau und gewissenhaft gemacht.</p>
+            <p>Diese Arbeitsweise nehme ich mit in die IT. Wenn technisch etwas nicht funktioniert, gehe ich analytisch vor: Ich suche die Ursache, prüfe Schritt für Schritt und arbeite lösungsorientiert, bis alles wieder läuft. Im Freundes- und Familienkreis bin ich oft der Erste, den man bei technischen Problemen fragt.</p>
+            <p>In meiner Freizeit konfiguriere ich gern verschiedene Systeme und schraube auch mal daran herum, um zu verstehen, wie alles zusammenhängt. Ich habe eine Liebe für Hardware und mit Python erste kleine Skripte geschrieben. Diese Neugier möchte ich in der Systemintegration zum Beruf machen.</p>
+          </div>
+          <a class="btn" href="#kontakt">Kontakt aufnehmen</a>
+        </div>
 
       <svg class="net" viewBox="0 0 360 290" role="img" aria-label="Schema: Domain, DNS, GitHub und Browser sind miteinander verbunden">
         <path class="edge e1" pathLength="1" d="M40,200 L120,110"/>
@@ -168,16 +209,8 @@
           <animateMotion dur="4s" begin="2.4s" repeatCount="indefinite" path="M40,200 L120,110 L230,150 L320,70"/>
         </circle>
       </svg>
+      </div>
     </header>
-
-    <section id="ueber-mich">
-      <h2>Über mich</h2>
-      <p class="text">
-        <!-- Ersetze diesen Text durch zwei bis drei eigene Sätze. -->
-        Mich interessiert, wie Systeme zusammenarbeiten: vom Netzwerk über Server bis zum Arbeitsplatz-PC.
-        Ich probiere gern selbst aus, wie Dinge funktionieren, und lerne dabei schnell dazu.
-      </p>
-    </section>
 
     <section id="projekte">
       <h2>Projekte</h2>
@@ -195,12 +228,13 @@
       <h2>Kontakt</h2>
       <p class="text">
         Schreib mir gern eine E-Mail:
-        <a href="mailto:deine@mail.de">deine@mail.de</a>
+        <a href="mailto:kiesel.99@protonmail.com">kiesel.99@protonmail.com</a>
       </p>
     </section>
 
     <footer>© Toni Kiesel</footer>
   </main>
+  </div>
   <noscript><style>.net .edge{animation:none;stroke-dashoffset:0}.net .node,.net text{animation:none;opacity:1}</style></noscript>
   <script>
     (function () {
