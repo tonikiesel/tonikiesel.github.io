@@ -77,6 +77,32 @@
     .sound:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
     footer { padding: 2rem 0 3rem; color: var(--muted); font-size: .95rem; border-top: 1px solid var(--line); }
 
+    /* Abtauch-Übergang: Kühlflüssigkeit steigt auf */
+    .dive { position: fixed; inset: 0; z-index: 50; overflow: hidden; pointer-events: none; visibility: hidden; }
+    .dive.rise, .dive.exit { visibility: visible; pointer-events: auto; }
+    .coolant {
+      position: absolute; left: 0; right: 0; top: 0; height: calc(100% + 40px);
+      background: linear-gradient(#22b4ff, #0a5bd6 55%, #07337a);
+      transform: translateY(105%);
+    }
+    .coolant::before {
+      content: ""; position: absolute; left: -10%; right: -10%; top: -28px; height: 56px;
+      background: #22b4ff; border-radius: 50%;
+      box-shadow: 0 -8px 30px rgba(34,180,255,.7);
+    }
+    .dive.rise .coolant { transform: translateY(0); transition: transform .9s cubic-bezier(.5,0,.75,.55); }
+    .dive.exit .coolant { transform: translateY(-110%); transition: transform .85s cubic-bezier(.3,.3,.4,1); }
+    .bubble {
+      position: absolute; bottom: 0; border-radius: 50%; opacity: 0;
+      background: rgba(255,255,255,.35); border: 1px solid rgba(255,255,255,.7);
+    }
+    .dive.rise .bubble, .dive.exit .bubble { animation-name: bubble; animation-timing-function: ease-in; animation-fill-mode: both; }
+    @keyframes bubble {
+      0% { transform: translateY(0); opacity: 0; }
+      20% { opacity: .9; }
+      100% { transform: translateY(-85vh); opacity: 0; }
+    }
+
     /* Ein Moment beim Laden: das Netz baut sich auf */
     .net .edge { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw .9s ease forwards paused; }
     .net .e2 { animation-delay: .5s; } .net .e3 { animation-delay: 1s; } .net .e4 { animation-delay: 1.4s; }
@@ -90,6 +116,7 @@
       .net .edge { animation: none; stroke-dashoffset: 0; }
       .net .node, .net text { animation: none; opacity: 1; }
       .net .packet { display: none; }
+      .dive { display: none; }
       html { scroll-behavior: auto; }
     }
 
@@ -104,6 +131,8 @@
   </style>
 </head>
 <body>
+  <div class="dive" id="dive" aria-hidden="true"><div class="coolant"></div></div>
+
   <section class="intro" aria-label="Einleitung">
     <div class="intro-text">
       <p class="intro-title">Lasst uns gemeinsam in mein Profil abtauchen</p>
@@ -189,6 +218,34 @@
         btn.setAttribute('aria-pressed', String(!v.muted));
         if (v.paused) v.play();
       });
+      var dive = document.getElementById('dive');
+      var go = document.querySelector('.intro .btn');
+      var busy = false;
+      if (!reduce && dive && go) {
+        var coolant = dive.firstElementChild;
+        for (var i = 0; i < 16; i++) {
+          var b = document.createElement('span');
+          var size = 6 + Math.random() * 16;
+          b.className = 'bubble';
+          b.style.cssText = 'width:' + size + 'px;height:' + size + 'px;left:' + (Math.random() * 96).toFixed(1) +
+            '%;animation-delay:' + (Math.random() * 0.7).toFixed(2) + 's;animation-duration:' + (1.1 + Math.random() * 0.9).toFixed(2) + 's';
+          coolant.appendChild(b);
+        }
+        go.addEventListener('click', function (e) {
+          e.preventDefault();
+          if (busy) return;
+          busy = true;
+          dive.className = 'dive rise';
+          setTimeout(function () {
+            var t = document.getElementById('profil');
+            window.scrollTo({ top: t.getBoundingClientRect().top + window.pageYOffset, behavior: 'instant' });
+            t.setAttribute('tabindex', '-1');
+            t.focus({ preventScroll: true });
+            dive.className = 'dive exit';
+          }, 1150);
+          setTimeout(function () { dive.className = 'dive'; busy = false; }, 2300);
+        });
+      }
       var net = document.querySelector('.net');
       if ('IntersectionObserver' in window) {
         new IntersectionObserver(function (e, o) {
