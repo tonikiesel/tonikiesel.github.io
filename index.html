@@ -134,37 +134,12 @@
       margin: 0; font-size: clamp(.8rem, 1.9vw, 1.05rem); font-weight: 300; line-height: 1.6;
       letter-spacing: .14em; text-transform: uppercase; color: var(--soft);
     }
-    /* Rechte Spalte: Wasserkühlungs-Kreislauf + Mini-Terminal */
-    .side { display: grid; gap: 1.5rem; align-content: center; min-width: 0; }
-    .panel { padding: 1rem 1.2rem 1.1rem; }
-    .loop svg { display: block; width: 100%; height: auto; overflow: visible; }
-    .lp-wall, .lp-core, .lp-cool, .lp-sheen, .lp-bub { fill: none; }
-    .lp-wall { stroke: rgba(150,200,255,.24); stroke-width: 11; }
-    .lp-core { stroke: rgba(8,18,30,.8); stroke-width: 8; }
-    .lp-cool { stroke: #1ea7ff; stroke-opacity: .6; stroke-width: 5; }
-    .lp-sheen { stroke: rgba(140,215,255,.45); stroke-width: 5; stroke-linecap: round; stroke-dasharray: 46 174; }
-    .lp-bub { stroke: rgba(225,250,255,.85); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 0.1 61 0.1 23 0.1 97 0.1 41; }
-    .part { cursor: pointer; outline: none; }
-    .part .body { fill: rgba(20,32,46,.96); stroke: rgba(140,200,255,.5); stroke-width: 1.4; transition: stroke .2s, fill .2s; }
-    .part:hover .body, .part:focus-visible .body, .part.on .body { stroke: #9fe0ff; fill: rgba(30,52,74,.98); }
-    .part .level { fill: rgba(30,167,255,.28); }
-    .part .fins { stroke: rgba(140,200,255,.18); stroke-width: 1; fill: none; }
-    .part .ring-fan { fill: rgba(14,24,36,.95); stroke: rgba(140,200,255,.4); stroke-width: 1; }
-    .part .fan { fill: rgba(150,215,255,.75); animation: spin 1.6s linear infinite; }
-    .part .fan.slow { animation-duration: 2.6s; fill: rgba(150,215,255,.8); }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .part text { font: 600 13px var(--font); fill: #cfe8ff; pointer-events: none; }
-    .part .lbl, .part .lbl-in { text-anchor: middle; }
-    .part .lbl-l { text-anchor: start; fill: var(--muted); }
-    .part .lbl { fill: var(--muted); }
-    .info { margin: .5rem 0 0; min-height: 3.2em; font-size: .88rem; line-height: 1.5; color: var(--muted); }
-    .info strong { color: var(--soft); font-weight: 600; margin-right: .35rem; }
-
-    .term { padding: 0; font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace; }
+    /* Mini-Terminal neben dem Projekt */
+    .term { width: 100%; width: 100%; max-width: 24rem; justify-self: end; overflow: hidden; border-radius: 12px; border: 1px solid rgba(120,175,230,.26); background: rgba(8,14,22,.6); box-shadow: 0 10px 28px rgba(0,0,0,.3); padding: 0; font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace; }
     .term-bar { display: flex; align-items: center; gap: .4rem; padding: .55rem .9rem; border-bottom: 1px solid rgba(120,175,230,.16); background: rgba(255,255,255,.025); position: relative; z-index: 1; }
     .term-bar i { width: 10px; height: 10px; border-radius: 50%; background: rgba(150,200,255,.28); }
     .term-bar span { margin-left: .6rem; font-size: .75rem; color: var(--muted); }
-    .term pre { position: relative; z-index: 1; margin: 0; padding: .9rem 1.1rem .4rem; min-height: 14.6em; font: inherit; font-size: .8rem; line-height: 1.6; color: #cfe8ff; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .term pre { position: relative; z-index: 1; margin: 0; padding: .9rem 1.1rem .4rem; min-height: 12.8em; font: inherit; font-size: .72rem; line-height: 1.6; color: #cfe8ff; white-space: pre-wrap; overflow-wrap: anywhere; }
     .term .p { color: #6fd0a0; }
     .term .o { color: var(--muted); }
     .term .ok { color: #6fd0a0; }
@@ -172,8 +147,17 @@
     @keyframes blink { to { visibility: hidden; } }
     .term-note { position: relative; z-index: 1; margin: 0; padding: 0 1.1rem .8rem; font: 400 .72rem/1.4 var(--font); color: rgba(154,168,182,.7); }
 
-    .profile-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 3rem; align-items: center; }
-    .name-row { display: flex; align-items: center; gap: 1.4rem; margin-bottom: 1.8rem; }
+    /* Projekte: Text + Terminal gemeinsam in einem Kasten */
+    .about-frame.proj-frame { max-width: none; margin-bottom: 0; }
+    .proj-card { padding: 1.8rem 2rem; }
+    .proj-list { position: relative; z-index: 1; }
+    .proj-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 24rem); gap: 2.5rem; align-items: start; }
+    .profile-grid { display: block; }
+    .pcol .about-frame { margin-bottom: 1.8rem; }
+    /* Foto links im Kasten, Text rechts, beides in einem Rahmen */
+    .photo { position: relative; z-index: 1; min-height: 20rem; }
+    .photo .portrait { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; object-position: 50% 28%; border: 3px solid var(--accent); border-radius: 10px; outline: none; transform: none; }
+    .about-text { align-self: center; padding: 1.4rem 2rem 1rem 0; position: relative; z-index: 1; }
     .name { margin: 0; font-size: clamp(2.2rem, 5.5vw, 3.4rem); line-height: 1.05; font-weight: 800; letter-spacing: -0.03em; }
     .portrait {
       flex: none; display: block; width: clamp(7rem, 26vw, 13rem); height: auto; aspect-ratio: 1; object-fit: cover;
@@ -181,7 +165,7 @@
       outline: 1px solid var(--line); outline-offset: 5px;
     }
     /* Über-mich als Karte: dezenter Rahmen, versetzter zweiter Rahmen, Schimmern am Mauszeiger */
-    .about-frame { position: relative; max-width: 40rem; margin-bottom: 1.8rem; }
+    .about-frame { position: relative; max-width: none; margin-bottom: 1.8rem; }
     .about-frame::before {
       content: ""; position: absolute; inset: -9px; z-index: 0; pointer-events: none;
       border: 1.5px solid rgba(110,175,255,.46); border-radius: 22px;
@@ -214,7 +198,7 @@
       -webkit-mask-composite: xor; mask-composite: exclude;
     }
     .glass:hover::before, .glass:hover::after, .glass.lit::before, .glass.lit::after { opacity: 1; }
-    .about { padding: 1.7rem 2rem 1.2rem; }
+    .about { display: grid; grid-template-columns: minmax(0, 19rem) minmax(0, 1fr); gap: 2.2rem; padding: .55rem; }
     .about p { position: relative; z-index: 1; margin: 0 0 1rem; text-align: justify; hyphens: auto; font-weight: 300; }
     .about p:last-child { margin-bottom: .4rem; }
     .profile-head { text-shadow: 0 0 12px rgba(13,20,27,.95), 0 0 4px rgba(13,20,27,.9); }
@@ -329,7 +313,7 @@
     @media (prefers-reduced-motion: reduce) {
       .dive { display: none; }
       .cue span { animation: none; opacity: 1; }
-      .tube-flow, .tube-sheen, .part .fan, .term .cur { animation: none; }
+      .tube-flow, .tube-sheen, .term .cur { animation: none; }
       .btn.ready, .btn.nope { animation: none; }
       .js .clip .frame, .js .clip .btn { opacity: 1; transform: none; transition: none; }
       html { scroll-behavior: auto; }
@@ -338,9 +322,13 @@
     @media (max-width: 760px) {
       .frame { height: min(62svh, 34rem); }
       .profile { padding-top: 3rem; }
-      .profile-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .about { grid-template-columns: 1fr; gap: 1.1rem; padding: .5rem; }
+      .photo { min-height: 0; height: 16rem; }
+      .about-text { padding: 0 .9rem .8rem; }
+      .proj-card { padding: 1.3rem 1.2rem; }
+      .proj-grid { grid-template-columns: 1fr; gap: 1.8rem; }
+      .term { justify-self: stretch; max-width: none; }
       .about p { text-align: left; }
-      .about { padding: 1.3rem 1.2rem .9rem; }
       .about-frame::before { inset: -6px; border-radius: 19px; }
     }
   </style>
@@ -373,70 +361,28 @@
       </div>
 
       <div class="profile-grid">
-        <div>
-          <div class="name-row">
-            <img class="portrait" src="toni.jpg" width="600" height="600" alt="Porträt von Toni Kiesel">
-          </div>
+        <div class="pcol">
           <div class="about-frame">
           <div class="about glass">
+            <div class="photo"><img class="portrait" src="toni.jpg" width="600" height="600" alt="Porträt von Toni Kiesel"></div>
+            <div class="about-text">
             <p>Nach meiner Ausbildung zum Bäcker habe ich mehrere Jahre als Bäckergeselle gearbeitet. Dort habe ich gelernt, präzise zu arbeiten, Abläufe zu koordinieren und auch unter Zeitdruck auf Qualität zu achten. Das hat mich detailgenau und gewissenhaft gemacht.</p>
             <p>Diese Arbeitsweise nehme ich mit in die IT. Wenn technisch etwas nicht funktioniert, gehe ich analytisch vor: Ich suche die Ursache, prüfe Schritt für Schritt und arbeite lösungsorientiert, bis alles wieder läuft. Im Freundes- und Familienkreis bin ich oft der Erste, den man bei technischen Problemen fragt.</p>
             <p>In meiner Freizeit konfiguriere ich gern verschiedene Systeme und schraube auch mal daran herum, um zu verstehen, wie alles zusammenhängt. Ich habe eine Liebe für Hardware und mit Python erste kleine Skripte geschrieben. Diese Neugier möchte ich in der Systemintegration zum Beruf machen.</p>
+            </div>
           </div>
           </div>
           <a class="btn" href="#kontakt">Kontakt aufnehmen</a>
         </div>
-
-      <aside class="side">
-        <div class="glass panel loop">
-          <svg viewBox="0 0 400 190" role="img" aria-label="Schema einer PC-Wasserkühlung: Pumpe, CPU-Block, GPU-Block und Radiator in einem Kreislauf">
-            <path class="lp-wall" d="M49,120 L49,136 Q49,150 63,150 L356,150 Q370,150 370,136 L370,51 Q370,37 356,37 L63,37 Q49,37 49,51 L49,64"/>
-            <path class="lp-core" d="M49,120 L49,136 Q49,150 63,150 L356,150 Q370,150 370,136 L370,51 Q370,37 356,37 L63,37 Q49,37 49,51 L49,64"/>
-            <path class="lp-cool" d="M49,120 L49,136 Q49,150 63,150 L356,150 Q370,150 370,136 L370,51 Q370,37 356,37 L63,37 Q49,37 49,51 L49,64"/>
-            <path class="lp-sheen tube-sheen" style="--t2:11s" d="M49,120 L49,136 Q49,150 63,150 L356,150 Q370,150 370,136 L370,51 Q370,37 356,37 L63,37 Q49,37 49,51 L49,64"/>
-            <path class="lp-bub tube-flow" style="--t:9s" d="M49,120 L49,136 Q49,150 63,150 L356,150 Q370,150 370,136 L370,51 Q370,37 356,37 L63,37 Q49,37 49,51 L49,64"/>
-
-            <g class="part" tabindex="0" data-title="Pumpe" data-text="Die Pumpe hält die Kühlflüssigkeit in Bewegung. Ohne sie steht der Kreislauf still, deshalb ist sie das Herz der Wasserkühlung.">
-              <rect class="body" x="26" y="64" width="46" height="56" rx="9"/>
-              <rect class="level" x="31" y="69" width="36" height="46" rx="6"/>
-              <g transform="translate(49 92)"><g class="fan slow"><ellipse cx="0" cy="-6" rx="3" ry="6"/><ellipse cx="0" cy="-6" rx="3" ry="6" transform="rotate(120)"/><ellipse cx="0" cy="-6" rx="3" ry="6" transform="rotate(240)"/></g></g>
-              <text x="80" y="95" class="lbl-l">Pumpe</text>
-            </g>
-
-            <g class="part" tabindex="0" data-title="Radiator" data-text="Hier gibt die erwärmte Flüssigkeit ihre Wärme an die Luft ab, unterstützt von den Lüftern. Danach fließt sie gekühlt zurück.">
-              <rect class="body" x="110" y="12" width="230" height="50" rx="8"/>
-              <path class="fins" d="M122,16V58 M134,16V58 M146,16V58 M186,16V58 M198,16V58 M210,16V58 M222,16V58 M234,16V58 M246,16V58 M258,16V58 M298,16V58 M310,16V58 M322,16V58"/>
-              <circle class="ring-fan" cx="165" cy="37" r="20"/>
-              <circle class="ring-fan" cx="285" cy="37" r="20"/>
-              <g transform="translate(165 37)"><g class="fan"><ellipse cx="0" cy="-9" rx="4" ry="9"/><ellipse cx="0" cy="-9" rx="4" ry="9" transform="rotate(90)"/><ellipse cx="0" cy="-9" rx="4" ry="9" transform="rotate(180)"/><ellipse cx="0" cy="-9" rx="4" ry="9" transform="rotate(270)"/></g></g>
-              <g transform="translate(285 37)"><g class="fan"><ellipse cx="0" cy="-9" rx="4" ry="9"/><ellipse cx="0" cy="-9" rx="4" ry="9" transform="rotate(90)"/><ellipse cx="0" cy="-9" rx="4" ry="9" transform="rotate(180)"/><ellipse cx="0" cy="-9" rx="4" ry="9" transform="rotate(270)"/></g></g>
-              <text x="225" y="84" class="lbl">Radiator</text>
-            </g>
-
-            <g class="part" tabindex="0" data-title="CPU-Kühlblock" data-text="Der Kühlblock sitzt direkt auf dem Prozessor und nimmt dessen Wärme an die Flüssigkeit ab.">
-              <rect class="body" x="118" y="128" width="60" height="44" rx="7"/>
-              <text x="148" y="154" class="lbl-in">CPU</text>
-            </g>
-
-            <g class="part" tabindex="0" data-title="GPU-Kühlblock" data-text="Auch die Grafikkarte wird heiß. Ihr Kühlblock gibt die Wärme genauso an die Flüssigkeit weiter.">
-              <rect class="body" x="236" y="124" width="110" height="52" rx="7"/>
-              <text x="291" y="154" class="lbl-in">GPU</text>
-            </g>
-          </svg>
-          <p class="info" id="loopInfo" aria-live="polite"><strong>Wasserkühlung</strong> Fahr über ein Bauteil oder tippe es an.</p>
-        </div>
-
-        <div class="glass term" role="img" aria-label="Nachgestellte Terminal-Ausgabe: DNS-Abfrage der Domain, git push und ein kleines Python-Skript">
-          <div class="term-bar"><i></i><i></i><i></i><span>toni@pc: ~</span></div>
-          <pre id="termOut" aria-hidden="true"></pre>
-          <p class="term-note">Nachgestellter Ablauf – so entsteht diese Seite.</p>
-        </div>
-      </aside>
       </div>
     </header>
 
     <section id="projekte">
       <h2>Projekte</h2>
+      <div class="about-frame proj-frame">
+      <div class="glass proj-card">
+      <div class="proj-grid">
+        <div class="proj-list">
       <div class="project">
         <h3>Diese Website</h3>
         <p>
@@ -445,6 +391,15 @@
         </p>
       </div>
       <!-- Weitere Projekte hier als <div class="project"> mit <h3> und <p> ergänzen. -->
+        </div>
+        <div class="term" role="img" aria-label="Nachgestellte Terminal-Ausgabe: DNS-Abfrage der Domain, git push und ein kleines Python-Skript">
+          <div class="term-bar"><i></i><i></i><i></i><span>toni@pc: ~</span></div>
+          <pre id="termOut" aria-hidden="true"></pre>
+          <p class="term-note">Nachgestellter Ablauf – so entsteht diese Seite.</p>
+        </div>
+      </div>
+      </div>
+      </div>
     </section>
 
     <section id="kontakt">
@@ -899,28 +854,6 @@
   </script>
   <script>
     (function () {
-      /* Wasserkühlung: Bauteil antippen / überfahren -> kurze Erklärung */
-      var svg = document.querySelector('.loop svg'), info = document.getElementById('loopInfo');
-      if (!svg || !info) return;
-      var def = info.innerHTML, cur = null;
-      function esc(t) { return t.replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
-      function show(part) {
-        Array.prototype.forEach.call(svg.querySelectorAll('.part.on'), function (x) { x.classList.remove('on'); });
-        if (!part) { info.innerHTML = def; cur = null; return; }
-        part.classList.add('on'); cur = part;
-        info.innerHTML = '<strong>' + esc(part.getAttribute('data-title')) + '</strong> ' + esc(part.getAttribute('data-text'));
-      }
-      Array.prototype.forEach.call(svg.querySelectorAll('.part'), function (part) {
-        part.addEventListener('mouseenter', function () { show(part); });
-        part.addEventListener('mouseleave', function () { show(null); });
-        part.addEventListener('focus', function () { show(part); });
-        part.addEventListener('blur', function () { show(null); });
-        part.addEventListener('click', function () { show(part); });
-      });
-    })();
-  </script>
-  <script>
-    (function () {
       /* Mini-Terminal: tippt sich selbst, solange es sichtbar ist */
       var pre = document.getElementById('termOut');
       if (!pre) return;
@@ -980,7 +913,5 @@
       run();
     })();
   </script>
-</body>
-</html>
 </body>
 </html>
