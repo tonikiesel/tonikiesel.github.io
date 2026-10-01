@@ -1,24 +1,201 @@
-html
 <!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Vorname Nachname – Bewerbung Fachinformatiker</title>
+  <title>Toni Kiesel – Praktikum Fachinformatiker für Systemintegration</title>
+  <meta name="description" content="Toni Kiesel sucht einen Praktikumsplatz als Fachinformatiker für Systemintegration.">
   <style>
-    body { font-family: Arial, sans-serif; max-width: 700px; margin: 3rem auto; padding: 0 1rem; line-height: 1.6; }
-    h1 { margin-bottom: 0; }
-    a { color: #0b5fff; }
+    :root {
+      --bg: #f2f4f6;
+      --ink: #17212b;
+      --muted: #55616d;
+      --line: #cfd6dd;
+      --accent: #1f5fbf;
+      --packet: #f08a1c;
+      --font: "Avenir Next", "Segoe UI Variable Display", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #141a21; --ink: #e9edf1; --muted: #9aa6b2; --line: #2d3742; --accent: #6aa3ff; }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; background: var(--bg); color: var(--ink);
+      font-family: var(--font); font-size: 1.0625rem; line-height: 1.65;
+    }
+    a { color: var(--accent); text-underline-offset: 3px; }
+    a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+    main { max-width: 64rem; margin: 0 auto; padding: 0 1.5rem; }
+
+    .hero {
+      display: grid; grid-template-columns: 1.1fr 1fr; gap: 2rem;
+      align-items: center; min-height: 80vh; padding: 3rem 0;
+    }
+    h1 {
+      font-size: clamp(2.8rem, 8vw, 5.2rem); line-height: 1; margin: 0 0 1.2rem;
+      font-weight: 800; letter-spacing: -0.04em;
+    }
+    .lead { font-size: 1.25rem; max-width: 30rem; margin: 0 0 1.8rem; color: var(--muted); }
+    .btn {
+      display: inline-block; padding: .75rem 1.4rem; background: var(--accent); color: #fff;
+      font-weight: 600; text-decoration: none; border-radius: 6px;
+    }
+    .btn:hover { filter: brightness(1.1); }
+    @media (prefers-color-scheme: dark) { .btn { color: #0c1218; } }
+
+    .net { width: 100%; height: auto; }
+    .net text { fill: var(--muted); font: 600 12px var(--font); text-anchor: middle; }
+    .net .edge { stroke: var(--line); stroke-width: 2; fill: none; }
+    .net .node { fill: var(--bg); stroke: var(--accent); stroke-width: 3; }
+    .net .packet { fill: var(--packet); }
+
+    section { padding: 3.5rem 0; border-top: 1px solid var(--line); }
+    h2 { font-size: 1.7rem; letter-spacing: -0.02em; margin: 0 0 1rem; }
+    .text { max-width: 40rem; }
+    .project { max-width: 40rem; }
+    .project h3 { margin: 0 0 .3rem; font-size: 1.15rem; }
+    .project p { margin: 0; color: var(--muted); }
+    /* Opener mit Video */
+    .intro {
+      background: #0d141b; color: #f2f4f6; min-height: 100vh; min-height: 100svh;
+      display: grid; grid-template-columns: 1fr auto; gap: 3rem; align-items: center;
+      justify-content: center; padding: 2.5rem max(1.5rem, calc((100% - 64rem) / 2));
+    }
+    .intro-title {
+      font-size: clamp(2.2rem, 5.5vw, 4rem); line-height: 1.05; font-weight: 800;
+      letter-spacing: -0.035em; margin: 0 0 1.8rem; max-width: 14ch;
+    }
+    .intro .btn { background: #f2f4f6; color: #0d141b; }
+    .frame { position: relative; height: min(78vh, 46rem); aspect-ratio: 9 / 16; border-radius: 10px; overflow: hidden; background: #000; }
+    .frame video { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .sound {
+      position: absolute; right: .75rem; bottom: .75rem; padding: .45rem .85rem;
+      font: 600 .9rem var(--font); color: #fff; background: rgba(0,0,0,.6);
+      border: 1px solid rgba(255,255,255,.45); border-radius: 999px; cursor: pointer;
+    }
+    .sound:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+    footer { padding: 2rem 0 3rem; color: var(--muted); font-size: .95rem; border-top: 1px solid var(--line); }
+
+    /* Ein Moment beim Laden: das Netz baut sich auf */
+    .net .edge { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw .9s ease forwards paused; }
+    .net .e2 { animation-delay: .5s; } .net .e3 { animation-delay: 1s; } .net .e4 { animation-delay: 1.4s; }
+    .net .node, .net text { opacity: 0; animation: show .4s ease forwards paused; }
+    .net .n1 { animation-delay: .2s; } .net .n2 { animation-delay: .6s; } .net .n3 { animation-delay: 1.1s; }
+    .net .n4 { animation-delay: 1.5s; } .net .n5 { animation-delay: 1.8s; }
+    .net.go .edge, .net.go .node, .net.go text { animation-play-state: running; }
+    @keyframes draw { to { stroke-dashoffset: 0; } }
+    @keyframes show { to { opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) {
+      .net .edge { animation: none; stroke-dashoffset: 0; }
+      .net .node, .net text { animation: none; opacity: 1; }
+      .net .packet { display: none; }
+      html { scroll-behavior: auto; }
+    }
+
+    @media (max-width: 760px) {
+      .intro { grid-template-columns: 1fr; justify-items: center; gap: 1.8rem; padding-top: 1.5rem; }
+      .frame { order: -1; height: min(62svh, 34rem); }
+      .intro-title { max-width: none; text-align: center; margin-bottom: 1.2rem; }
+      .intro-text { text-align: center; }
+      .hero { grid-template-columns: 1fr; min-height: 0; padding-top: 2rem; }
+      .net { max-width: 22rem; }
+    }
   </style>
 </head>
 <body>
-  <h1>Vorname Nachname</h1>
-  <p>Auszubildender gesucht: Fachinformatiker für Systemintegration</p>
+  <section class="intro" aria-label="Einleitung">
+    <div class="intro-text">
+      <p class="intro-title">Lasst uns gemeinsam in mein Profil abtauchen</p>
+      <a class="btn" href="#profil">Abtauchen</a>
+    </div>
+    <div class="frame">
+      <video id="opener" autoplay muted loop playsinline preload="auto" poster="vorschau.jpg">
+        <source src="video.mp4" type="video/mp4">
+      </video>
+      <button class="sound" id="sound" type="button" aria-pressed="false">Ton an</button>
+    </div>
+  </section>
 
-  <h2>Über mich</h2>
-  <p>Kurze Vorstellung in zwei bis drei Sätzen.</p>
+  <main>
+    <header class="hero" id="profil">
+      <div>
+        <h1>Toni Kiesel</h1>
+        <p class="lead">Ich suche einen Praktikumsplatz als Fachinformatiker für Systemintegration.</p>
+        <a class="btn" href="#kontakt">Kontakt aufnehmen</a>
+      </div>
 
-  <h2>Kontakt</h2>
-  <p><a href="mailto:deine@mail.de">deine@mail.de</a></p>
+      <svg class="net" viewBox="0 0 360 290" role="img" aria-label="Schema: Domain, DNS, GitHub und Browser sind miteinander verbunden">
+        <path class="edge e1" pathLength="1" d="M40,200 L120,110"/>
+        <path class="edge e2" pathLength="1" d="M120,110 L230,150"/>
+        <path class="edge e3" pathLength="1" d="M230,150 L320,70"/>
+        <path class="edge e4" pathLength="1" d="M40,200 L230,250"/>
+        <circle class="node n1" cx="40" cy="200" r="8"/><text class="n1" x="40" y="228">Domain</text>
+        <circle class="node n2" cx="120" cy="110" r="8"/><text class="n2" x="120" y="92">DNS</text>
+        <circle class="node n3" cx="230" cy="150" r="8"/><text class="n3" x="230" y="178">GitHub</text>
+        <circle class="node n4" cx="320" cy="70" r="8"/><text class="n4" x="320" y="52">Browser</text>
+        <circle class="node n5" cx="230" cy="250" r="8"/><text class="n5" x="230" y="278">Mail</text>
+        <circle class="packet" r="5">
+          <animateMotion dur="4s" begin="2.4s" repeatCount="indefinite" path="M40,200 L120,110 L230,150 L320,70"/>
+        </circle>
+      </svg>
+    </header>
+
+    <section id="ueber-mich">
+      <h2>Über mich</h2>
+      <p class="text">
+        <!-- Ersetze diesen Text durch zwei bis drei eigene Sätze. -->
+        Mich interessiert, wie Systeme zusammenarbeiten: vom Netzwerk über Server bis zum Arbeitsplatz-PC.
+        Ich probiere gern selbst aus, wie Dinge funktionieren, und lerne dabei schnell dazu.
+      </p>
+    </section>
+
+    <section id="projekte">
+      <h2>Projekte</h2>
+      <div class="project">
+        <h3>Diese Website</h3>
+        <p>
+          Eigene Domain mit DNS-Einträgen bei IONOS, gehostet über GitHub Pages mit HTTPS.
+          Änderungen verwalte ich mit Git.
+        </p>
+      </div>
+      <!-- Weitere Projekte hier als <div class="project"> mit <h3> und <p> ergänzen. -->
+    </section>
+
+    <section id="kontakt">
+      <h2>Kontakt</h2>
+      <p class="text">
+        Schreib mir gern eine E-Mail:
+        <a href="mailto:deine@mail.de">deine@mail.de</a>
+      </p>
+    </section>
+
+    <footer>© Toni Kiesel</footer>
+  </main>
+  <noscript><style>.net .edge{animation:none;stroke-dashoffset:0}.net .node,.net text{animation:none;opacity:1}</style></noscript>
+  <script>
+    (function () {
+      var v = document.getElementById('opener');
+      var btn = document.getElementById('sound');
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) { v.removeAttribute('autoplay'); v.pause(); v.setAttribute('controls', ''); btn.hidden = true; }
+      if (!reduce) {
+        var started = v.play();
+        if (started && started.catch) { started.catch(function () { v.setAttribute('controls', ''); }); }
+      }
+      btn.addEventListener('click', function () {
+        v.muted = !v.muted;
+        btn.textContent = v.muted ? 'Ton an' : 'Ton aus';
+        btn.setAttribute('aria-pressed', String(!v.muted));
+        if (v.paused) v.play();
+      });
+      var net = document.querySelector('.net');
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (e, o) {
+          if (e[0].isIntersecting) { net.classList.add('go'); o.disconnect(); }
+        }, { threshold: 0.4 }).observe(net);
+      } else { net.classList.add('go'); }
+    })();
+  </script>
 </body>
 </html>
