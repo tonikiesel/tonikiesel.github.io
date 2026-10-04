@@ -298,14 +298,12 @@
     }
     .start-inner { display: flex; flex-direction: column; align-items: center; gap: clamp(5rem, 14vh, 8rem); }
     .start-cta { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: .9rem; }
-    .js .start-cta { opacity: 0; transform: translateY(14px); animation: btnIn 1s cubic-bezier(.2,.7,.3,1) 1.4s forwards; }
-    .hint-wrap { display: block; will-change: transform, opacity; animation: hint 2.2s cubic-bezier(.45,.05,.55,.95) infinite alternate; }
+    .hint-wrap { display: block; will-change: transform; backface-visibility: hidden; animation: hint 1.4s cubic-bezier(.37,0,.63,1) infinite alternate; }
     .hint {
       display: block; width: 30px; height: 50px; fill: none; stroke: #3cc4ff; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round;
       filter: drop-shadow(0 0 6px rgba(60,196,255,.6));
     }
-    @keyframes hint { from { transform: translate3d(0, -5px, 0); opacity: .55; } to { transform: translate3d(0, 5px, 0); opacity: 1; } }
-    @keyframes btnIn { to { opacity: 1; transform: none; } }
+    @keyframes hint { from { transform: translate3d(0, -7px, 0) rotate(.01deg); } to { transform: translate3d(0, 7px, 0) rotate(.01deg); } }
     /* Sperre: Das Profil erscheint erst nach dem Klick auf „Abtauchen“ */
     html.js:not(.unlocked) .stage { display: none; }
     html.just-unlocked .stage { animation: stageIn 1.2s ease .2s both; }
@@ -341,7 +339,6 @@
       html.just-unlocked .stage { animation: none; }
       .tube-flow, .tube-sheen, .term .cur, .intro-photo::before, .intro-photo::after { animation: none; }
       .btn.ready, .btn.nope { animation: none; }
-      .js .start-cta { opacity: 1; transform: none; animation: none; }
       .hint-wrap { animation: none; }
       html { scroll-behavior: auto; }
     }
