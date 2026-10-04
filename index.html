@@ -122,7 +122,7 @@
     @keyframes sheen { to { stroke-dashoffset: -220; } }
 
     /* Vorstellung zwischen Video und Profil */
-    .intro { min-height: calc(100svh - 2rem); display: grid; align-items: center; border-top: none; padding: 4rem 0; }
+    .intro { display: grid; align-items: center; border-top: none; padding: 3rem 0 4rem; }
     .intro:focus { outline: none; }
     .intro-grid { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: clamp(2rem, 6vw, 5rem); align-items: center; }
     .intro-text { text-shadow: 0 0 12px rgba(13,20,27,.95), 0 0 4px rgba(13,20,27,.9); }
@@ -318,6 +318,25 @@
     @keyframes nope { 20%, 60% { transform: translateX(-6px); } 40%, 80% { transform: translateX(6px); } }
     .frame { position: relative; height: min(66vh, 42rem); height: min(66svh, 42rem); aspect-ratio: 9 / 16; border-radius: 10px; overflow: hidden; background: #000; }
     .frame video { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .clip-say {
+      margin: 0; max-height: 0; overflow: hidden; opacity: 0; transform: translateY(10px); text-align: center;
+      font-size: clamp(1.3rem, 3vw, 2rem); font-weight: 300; line-height: 1.3; color: var(--ink);
+    }
+    /* Nach dem Video: Rahmen verschwindet, der Satz erscheint, alles rückt zusammen */
+    html.js.unlocked .clip {
+      min-height: 0; padding: 6rem 1.5rem 1.5rem; gap: 1.4rem;
+      transition: min-height 1.2s cubic-bezier(.65,0,.35,1), padding 1.2s cubic-bezier(.65,0,.35,1), gap 1.2s ease;
+    }
+    html.js.unlocked .clip .frame {
+      height: 0; opacity: 0; margin-bottom: -1.4rem;
+      transition: opacity .6s ease, height 1.1s cubic-bezier(.65,0,.35,1), margin 1.1s cubic-bezier(.65,0,.35,1);
+    }
+    html.js.unlocked .clip-say {
+      max-height: 8rem; opacity: 1; transform: none;
+      transition: max-height .8s ease .6s, opacity .9s ease .8s, transform .9s cubic-bezier(.2,.7,.3,1) .8s;
+    }
+    html.just-unlocked .stage { animation: stageIn 1.2s ease .4s both; }
+    @keyframes stageIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: none; } }
     .sound {
       position: absolute; right: .75rem; bottom: .75rem; padding: .45rem .85rem;
       font: 600 .9rem var(--font); color: #fff; background: rgba(0,0,0,.6);
@@ -330,26 +349,21 @@
     .dive { position: fixed; inset: 0; z-index: 50; overflow: hidden; pointer-events: none; visibility: hidden; }
     .dive.rise, .dive.exit { visibility: visible; pointer-events: auto; }
     .coolant {
-      position: absolute; left: 0; right: 0; top: 0; height: calc(100% + 40px);
-      background: linear-gradient(#22b4ff, #0a5bd6 55%, #07337a);
-      transform: translateY(105%);
+      position: absolute; left: 0; right: 0; top: 0; height: calc(100% + 40vh);
+      background: linear-gradient(rgba(15,42,64,0) 0, rgba(15,42,64,.9) 22vh, #0f2a40 40vh, #0d1a25 100%);
+      transform: translateY(100%); opacity: 1;
     }
-    .coolant::before {
-      content: ""; position: absolute; left: -10%; right: -10%; top: -28px; height: 56px;
-      background: #22b4ff; border-radius: 50%;
-      box-shadow: 0 -8px 30px rgba(34,180,255,.7);
-    }
-    .dive.rise .coolant { transform: translateY(0); transition: transform .9s cubic-bezier(.5,0,.75,.55); }
-    .dive.exit .coolant { transform: translateY(-110%); transition: transform .85s cubic-bezier(.3,.3,.4,1); }
+    .dive.rise .coolant { transform: translateY(-40vh); transition: transform 1s cubic-bezier(.65,0,.35,1); }
+    .dive.exit .coolant { transform: translateY(-40vh); opacity: 0; transition: opacity .9s ease; }
     .bubble {
       position: absolute; bottom: 0; border-radius: 50%; opacity: 0;
-      background: rgba(255,255,255,.35); border: 1px solid rgba(255,255,255,.7);
+      background: rgba(200,235,255,.08); border: 1px solid rgba(200,235,255,.22);
     }
-    .dive.rise .bubble, .dive.exit .bubble { animation-name: bubble; animation-timing-function: ease-in; animation-fill-mode: both; }
+    .dive.rise .bubble, .dive.exit .bubble { animation-name: bubble; animation-timing-function: cubic-bezier(.4,0,.6,1); animation-fill-mode: both; }
     @keyframes bubble {
       0% { transform: translateY(0); opacity: 0; }
-      20% { opacity: .9; }
-      100% { transform: translateY(-85vh); opacity: 0; }
+      30% { opacity: .7; }
+      100% { transform: translateY(-70vh); opacity: 0; }
     }
 
     /* Ein Moment beim Laden: das Netz baut sich auf */
@@ -357,6 +371,8 @@
     @keyframes show { to { opacity: 1; } }
     @media (prefers-reduced-motion: reduce) {
       .dive { display: none; }
+      html.js.unlocked .clip, html.js.unlocked .clip .frame, html.js.unlocked .clip-say { transition: none; }
+      html.just-unlocked .stage { animation: none; }
       .cue span { animation: none; opacity: 1; }
       .tube-flow, .tube-sheen, .term .cur, .intro-photo::before, .intro-photo::after { animation: none; }
       .btn.ready, .btn.nope { animation: none; }
@@ -402,6 +418,7 @@
       </video>
       <button class="sound" id="sound" type="button" aria-pressed="false">Ton an</button>
     </div>
+    <p class="clip-say">Lasst uns gemeinsam in mein Profil abtauchen</p>
     <a class="btn" href="#intro">Abtauchen</a>
   </section>
 
@@ -531,7 +548,7 @@
       if (reduce) { v.pause(); v.setAttribute('controls', ''); btn.hidden = true; }
       else if ('IntersectionObserver' in window) {
         new IntersectionObserver(function (e) {
-          if (e[0].isIntersecting) {
+          if (e[0].isIntersecting && !document.documentElement.classList.contains('unlocked')) {
             if (v.ended) v.currentTime = 0;
             var started = v.play();
             if (started && started.catch) { started.catch(function (err) { if (err && err.name === 'NotAllowedError') v.setAttribute('controls', ''); }); }
@@ -557,7 +574,8 @@
       }
       function unlock() {
         if (isUnlocked() && !go.classList.contains('locked')) return;
-        root.classList.add('unlocked');
+        root.classList.add('unlocked', 'just-unlocked');
+        setTimeout(function () { v.pause(); }, 600);
         go.classList.remove('locked');
         go.removeAttribute('aria-disabled');
         go.textContent = 'Abtauchen';
@@ -599,12 +617,12 @@
       var busy = false;
       if (!reduce && dive && go) {
         var coolant = dive.firstElementChild;
-        for (var i = 0; i < 16; i++) {
+        for (var i = 0; i < 9; i++) {
           var b = document.createElement('span');
-          var size = 6 + Math.random() * 16;
+          var size = 3 + Math.random() * 7;
           b.className = 'bubble';
           b.style.cssText = 'width:' + size + 'px;height:' + size + 'px;left:' + (Math.random() * 96).toFixed(1) +
-            '%;animation-delay:' + (Math.random() * 0.7).toFixed(2) + 's;animation-duration:' + (1.1 + Math.random() * 0.9).toFixed(2) + 's';
+            '%;animation-delay:' + (Math.random() * 0.6).toFixed(2) + 's;animation-duration:' + (1.6 + Math.random() * 0.8).toFixed(2) + 's';
           coolant.appendChild(b);
         }
         go.addEventListener('click', function (e) {
@@ -618,8 +636,8 @@
             t.setAttribute('tabindex', '-1');
             t.focus({ preventScroll: true });
             dive.className = 'dive exit';
-          }, 1150);
-          setTimeout(function () { dive.className = 'dive'; busy = false; }, 2300);
+          }, 1050);
+          setTimeout(function () { dive.className = 'dive'; busy = false; }, 2050);
         });
       }
     })();
