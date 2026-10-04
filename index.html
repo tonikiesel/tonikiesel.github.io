@@ -7,7 +7,6 @@
   <meta name="description" content="Profil von Toni Kiesel: analytisch, lösungsorientiert, detailgenau und gewissenhaft. Interesse an IT und Systemintegration.">
   <script>
     document.documentElement.classList.add('js');
-    try { if (sessionStorage.getItem('profilFreigeschaltet') === '1') document.documentElement.classList.add('unlocked'); } catch (e) {}
   </script>
   <link rel="preload" href="montserrat.woff2" as="font" type="font/woff2" crossorigin>
   <style>
@@ -122,7 +121,7 @@
     @keyframes sheen { to { stroke-dashoffset: -220; } }
 
     /* Vorstellung zwischen Video und Profil */
-    .intro { display: grid; align-items: center; border-top: none; padding: 3rem 0 4rem; }
+    .intro { min-height: calc(100svh - 2rem); display: grid; align-items: center; border-top: none; padding: 4rem 0; }
     .intro:focus { outline: none; }
     .intro-grid { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: clamp(2rem, 6vw, 5rem); align-items: center; }
     .intro-text { text-shadow: 0 0 12px rgba(13,20,27,.95), 0 0 4px rgba(13,20,27,.9); }
@@ -297,52 +296,20 @@
       72.5% { opacity: 1; translate: 0 var(--len); }
       100% { opacity: 0; translate: 0 calc(var(--len) + var(--fall)); }
     }
-    .cue { position: absolute; left: 50%; bottom: 2rem; width: 26px; height: 42px; margin-left: -13px; border: 2px solid rgba(200,240,255,.55); border-radius: 14px; }
-    .cue span { display: block; width: 4px; height: 9px; margin: 8px auto 0; border-radius: 2px; background: #3cc4ff; animation: cue 1.8s ease-in-out infinite; }
-    @keyframes cue { 0% { transform: translateY(0); opacity: 0; } 25%, 75% { opacity: 1; } 100% { transform: translateY(14px); opacity: 0; } }
-
-    .clip {
-      min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 1.8rem; padding: 2rem 1.5rem; color: #f2f4f6; position: relative; overflow: hidden; border-top: 0;
+    .start-inner { display: flex; flex-direction: column; align-items: center; gap: clamp(5rem, 14vh, 8rem); }
+    .start-cta { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: .9rem; }
+    .js .start-cta { opacity: 0; transform: translateY(14px); animation: btnIn 1s cubic-bezier(.2,.7,.3,1) 1.4s forwards; }
+    .hint-wrap { display: block; will-change: transform, opacity; animation: hint 2.2s cubic-bezier(.45,.05,.55,.95) infinite alternate; }
+    .hint {
+      display: block; width: 30px; height: 50px; fill: none; stroke: #3cc4ff; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round;
+      filter: drop-shadow(0 0 6px rgba(60,196,255,.6));
     }
-    .js .clip .frame, .js .clip .btn { opacity: 0; transform: translateY(26px); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.7,.3,1); }
-    .js .clip .btn { transition-delay: .25s; }
-    .js .clip.in .frame, .js .clip.in .btn { opacity: 1; transform: none; }
-    /* Freischaltung: Profil erst nach dem Video */
+    @keyframes hint { from { transform: translate3d(0, -5px, 0); opacity: .55; } to { transform: translate3d(0, 5px, 0); opacity: 1; } }
+    @keyframes btnIn { to { opacity: 1; transform: none; } }
+    /* Sperre: Das Profil erscheint erst nach dem Klick auf „Abtauchen“ */
     html.js:not(.unlocked) .stage { display: none; }
-    .btn.locked { background: transparent; color: var(--soft); box-shadow: inset 0 0 0 1px rgba(143,195,255,.55); }
-    .btn.locked:hover { filter: none; }
-    .btn.ready { animation: ready 1.6s ease-out 3; }
-    .btn.nope { animation: nope .4s; }
-    @keyframes ready { 0%, 100% { box-shadow: 0 0 0 0 rgba(106,163,255,.65); } 50% { box-shadow: 0 0 0 14px rgba(106,163,255,0); } }
-    @keyframes nope { 20%, 60% { transform: translateX(-6px); } 40%, 80% { transform: translateX(6px); } }
-    .frame { position: relative; height: min(66vh, 42rem); height: min(66svh, 42rem); aspect-ratio: 9 / 16; border-radius: 10px; overflow: hidden; background: #000; }
-    .frame video { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .clip-say {
-      margin: 0; max-height: 0; overflow: hidden; opacity: 0; transform: translateY(10px); text-align: center;
-      font-size: clamp(1.3rem, 3vw, 2rem); font-weight: 300; line-height: 1.3; color: var(--ink);
-    }
-    /* Nach dem Video: Rahmen verschwindet, der Satz erscheint, alles rückt zusammen */
-    html.js.watched .clip {
-      min-height: 0; padding: 6rem 1.5rem 1.5rem; gap: 1.4rem;
-      transition: min-height 1.2s cubic-bezier(.65,0,.35,1), padding 1.2s cubic-bezier(.65,0,.35,1), gap 1.2s ease;
-    }
-    html.js.watched .clip .frame {
-      height: 0; opacity: 0; margin-bottom: -1.4rem;
-      transition: opacity .6s ease, height 1.1s cubic-bezier(.65,0,.35,1), margin 1.1s cubic-bezier(.65,0,.35,1);
-    }
-    html.js.watched .clip-say {
-      max-height: 8rem; opacity: 1; transform: none;
-      transition: max-height .8s ease .6s, opacity .9s ease .8s, transform .9s cubic-bezier(.2,.7,.3,1) .8s;
-    }
-    html.just-unlocked .stage { animation: stageIn 1.2s ease .4s both; }
+    html.just-unlocked .stage { animation: stageIn 1.2s ease .2s both; }
     @keyframes stageIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: none; } }
-    .sound {
-      position: absolute; right: .75rem; bottom: .75rem; padding: .45rem .85rem;
-      font: 600 .9rem var(--font); color: #fff; background: rgba(0,0,0,.6);
-      border: 1px solid rgba(255,255,255,.45); border-radius: 999px; cursor: pointer;
-    }
-    .sound:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
     footer { padding: 2rem 0 3rem; color: var(--muted); font-size: .95rem; border-top: 1px solid var(--line); }
 
     /* Abtauch-Übergang: Kühlflüssigkeit steigt auf */
@@ -357,13 +324,13 @@
     .dive.exit .coolant { transform: translateY(-40vh); opacity: 0; transition: opacity .9s ease; }
     .bubble {
       position: absolute; bottom: 0; border-radius: 50%; opacity: 0;
-      background: rgba(200,235,255,.08); border: 1px solid rgba(200,235,255,.22);
+      background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.35), rgba(200,235,255,.06) 60%); border: 1px solid rgba(200,235,255,.4);
     }
     .dive.rise .bubble, .dive.exit .bubble { animation-name: bubble; animation-timing-function: cubic-bezier(.4,0,.6,1); animation-fill-mode: both; }
     @keyframes bubble {
-      0% { transform: translateY(0); opacity: 0; }
-      30% { opacity: .7; }
-      100% { transform: translateY(-70vh); opacity: 0; }
+      0% { transform: translate3d(0, 0, 0); opacity: 0; }
+      25% { opacity: var(--o, .7); }
+      100% { transform: translate3d(var(--dx, 0px), var(--rise, -70vh), 0); opacity: 0; }
     }
 
     /* Ein Moment beim Laden: das Netz baut sich auf */
@@ -371,17 +338,15 @@
     @keyframes show { to { opacity: 1; } }
     @media (prefers-reduced-motion: reduce) {
       .dive { display: none; }
-      html.js.watched .clip, html.js.watched .clip .frame, html.js.watched .clip-say { transition: none; }
       html.just-unlocked .stage { animation: none; }
-      .cue span { animation: none; opacity: 1; }
       .tube-flow, .tube-sheen, .term .cur, .intro-photo::before, .intro-photo::after { animation: none; }
       .btn.ready, .btn.nope { animation: none; }
-      .js .clip .frame, .js .clip .btn { opacity: 1; transform: none; transition: none; }
+      .js .start-cta { opacity: 1; transform: none; animation: none; }
+      .hint-wrap { animation: none; }
       html { scroll-behavior: auto; }
     }
 
     @media (max-width: 760px) {
-      .frame { height: min(62svh, 34rem); }
       .profile { padding-top: 3rem; }
       .intro { padding: 3rem 0; }
       .intro-grid { grid-template-columns: 1fr; gap: 1.8rem; }
@@ -407,19 +372,13 @@
   <div class="dive" id="dive" aria-hidden="true"><div class="coolant"></div></div>
 
   <section class="start" aria-label="Einleitung">
-    <p class="drip-title" id="dripTitle"><span class="line">Lasst uns gemeinsam</span> <span class="line">in mein Profil abtauchen</span></p>
-    <a class="cue" href="#video" aria-label="Weiter zum Video"><span></span></a>
-  </section>
-
-  <section class="clip" id="video" aria-label="Video">
-    <div class="frame">
-      <video id="opener" muted playsinline preload="auto" poster="vorschau.jpg">
-        <source src="video.mp4" type="video/mp4">
-      </video>
-      <button class="sound" id="sound" type="button" aria-pressed="false">Ton an</button>
+    <div class="start-inner">
+      <p class="drip-title" id="dripTitle"><span class="line">Lasst uns gemeinsam</span> <span class="line">in mein Profil abtauchen</span></p>
+      <div class="start-cta">
+        <span class="hint-wrap" aria-hidden="true"><svg class="hint" viewBox="0 0 24 40"><path d="M12 3v30M4 25l8 9 8-9"/></svg></span>
+        <a class="btn" href="#intro">Abtauchen</a>
+      </div>
     </div>
-    <p class="clip-say">Lasst uns gemeinsam in mein Profil abtauchen</p>
-    <a class="btn" href="#intro">Abtauchen</a>
   </section>
 
   <div class="stage">
@@ -542,105 +501,50 @@
   </div>
   <script>
     (function () {
-      var v = document.getElementById('opener');
-      var btn = document.getElementById('sound');
-      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (reduce) { v.pause(); v.setAttribute('controls', ''); btn.hidden = true; }
-      else if ('IntersectionObserver' in window) {
-        new IntersectionObserver(function (e) {
-          if (e[0].isIntersecting && !document.documentElement.classList.contains('watched')) {
-            if (v.ended) v.currentTime = 0;
-            var started = v.play();
-            if (started && started.catch) { started.catch(function (err) { if (err && err.name === 'NotAllowedError') v.setAttribute('controls', ''); }); }
-          } else { v.pause(); }
-        }, { threshold: 0.6 }).observe(v);
-      } else { v.play(); }
-      btn.addEventListener('click', function () {
-        v.muted = !v.muted;
-        btn.textContent = v.muted ? 'Ton an' : 'Ton aus';
-        btn.setAttribute('aria-pressed', String(!v.muted));
-        if (v.paused) v.play();
-      });
-      /* Freischaltung: Das Profil gibt es erst, wenn das Video angesehen wurde */
       var root = document.documentElement;
-      var go = document.querySelector('.clip .btn');
-      var maxTime = 0;
-      function isUnlocked() { return root.classList.contains('unlocked'); }
-      function lockedLabel() {
-        var d = v.duration;
-        go.textContent = (isFinite(d) && d > 0 && maxTime > 0.1)
-          ? 'Noch ' + Math.max(1, Math.ceil(d - maxTime)) + ' s ansehen'
-          : 'Erst das Video ansehen';
-      }
-      function unlock() {
-        if (isUnlocked() && !go.classList.contains('locked')) return;
-        root.classList.add('unlocked');
-        go.classList.remove('locked');
-        go.removeAttribute('aria-disabled');
-        go.textContent = 'Abtauchen';
-        go.classList.add('ready');
-        try { sessionStorage.setItem('profilFreigeschaltet', '1'); } catch (e) {}
-      }
-      if (go) {
-        if (isUnlocked()) { go.textContent = 'Abtauchen'; }
-        else {
-          go.classList.add('locked');
-          go.setAttribute('aria-disabled', 'true');
-          lockedLabel();
-          go.addEventListener('click', function (e) {
-            if (!go.classList.contains('locked')) return;
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            go.classList.remove('nope');
-            void go.offsetWidth;
-            go.classList.add('nope');
-          });
-          v.addEventListener('timeupdate', function () {
-            if (!v.seeking && v.currentTime > maxTime) maxTime = v.currentTime;
-            if (isFinite(v.duration) && v.duration - maxTime < 0.25 && maxTime > 0) { unlock(); return; }
-            lockedLabel();
-          });
-          v.addEventListener('seeking', function () {
-            if (!isUnlocked() && v.currentTime > maxTime + 0.6) v.currentTime = maxTime;
-          });
-          v.addEventListener('ended', unlock);
-          /* Notausgang: Lässt sich das Video nicht laden, wird trotzdem freigeschaltet */
-          var srcEl = v.querySelector('source');
-          if (srcEl) srcEl.addEventListener('error', unlock);
-          v.addEventListener('error', unlock);
-          setTimeout(function () { if (v.readyState === 0 && !isUnlocked()) unlock(); }, 8000);
-        }
-      }
-      /* Erst wenn das Video wirklich zu Ende gelaufen ist, verschwindet es */
-      v.addEventListener('ended', function () { root.classList.add('unlocked', 'watched', 'just-unlocked'); });
-      v.addEventListener('click', function () { if (v.paused) { if (v.ended) v.currentTime = 0; v.play(); } });
+      var go = document.querySelector('.start .btn');
+      var intro = document.getElementById('intro');
       var dive = document.getElementById('dive');
-      var busy = false;
-      if (!reduce && dive && go) {
-        var coolant = dive.firstElementChild;
-        for (var i = 0; i < 9; i++) {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!go || !intro) return;
+      function show(instant) {
+        if (!root.classList.contains('unlocked')) root.classList.add('unlocked', 'just-unlocked');
+        var start = document.querySelector('.start');
+        if (start) start.style.display = 'none';
+        window.scrollTo({ top: intro.getBoundingClientRect().top + window.pageYOffset, behavior: instant ? 'instant' : 'smooth' });
+        intro.setAttribute('tabindex', '-1');
+        intro.focus({ preventScroll: true });
+      }
+      if (reduce || !dive) {
+        go.addEventListener('click', function (e) { e.preventDefault(); show(false); });
+        return;
+      }
+      var coolant = dive.firstElementChild;
+      function rnd(min, max) { return min + Math.random() * (max - min); }
+      function makeBubbles() {
+        Array.prototype.slice.call(coolant.querySelectorAll('.bubble')).forEach(function (old) { old.remove(); });
+        var count = Math.round(rnd(22, 45));
+        for (var i = 0; i < count; i++) {
           var b = document.createElement('span');
-          var size = 3 + Math.random() * 7;
+          /* meist kleine Blasen, ab und zu eine große */
+          var size = Math.random() < 0.15 ? rnd(14, 26) : rnd(3, 11);
           b.className = 'bubble';
-          b.style.cssText = 'width:' + size + 'px;height:' + size + 'px;left:' + (Math.random() * 96).toFixed(1) +
-            '%;animation-delay:' + (Math.random() * 0.6).toFixed(2) + 's;animation-duration:' + (1.6 + Math.random() * 0.8).toFixed(2) + 's';
+          b.style.cssText = 'width:' + size.toFixed(1) + 'px;height:' + size.toFixed(1) + 'px;left:' + rnd(0, 97).toFixed(1) + '%' +
+            ';--dx:' + rnd(-30, 30).toFixed(0) + 'px;--rise:-' + rnd(45, 95).toFixed(0) + 'vh;--o:' + rnd(.4, .85).toFixed(2) +
+            ';animation-delay:' + rnd(0, 0.9).toFixed(2) + 's;animation-duration:' + rnd(1.4, 2.6).toFixed(2) + 's';
           coolant.appendChild(b);
         }
-        go.addEventListener('click', function (e) {
-          e.preventDefault();
-          if (busy) return;
-          busy = true;
-          dive.className = 'dive rise';
-          setTimeout(function () {
-            var t = document.getElementById('intro');
-            window.scrollTo({ top: t.getBoundingClientRect().top + window.pageYOffset, behavior: 'instant' });
-            t.setAttribute('tabindex', '-1');
-            t.focus({ preventScroll: true });
-            dive.className = 'dive exit';
-          }, 1050);
-          setTimeout(function () { dive.className = 'dive'; busy = false; }, 2050);
-        });
       }
+      var busy = false;
+      go.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (busy) return;
+        busy = true;
+        makeBubbles();
+        dive.className = 'dive rise';
+        setTimeout(function () { show(true); dive.className = 'dive exit'; }, 1050);
+        setTimeout(function () { dive.className = 'dive'; busy = false; }, 2050);
+      });
     })();
   </script>
   <script>
@@ -784,17 +688,6 @@
       (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(drips);
       var timer;
       window.addEventListener('resize', function () { clearTimeout(timer); timer = setTimeout(drips, 200); });
-    })();
-  </script>
-  <script>
-    (function () {
-      var clip = document.getElementById('video');
-      if (!clip) return;
-      if ('IntersectionObserver' in window) {
-        new IntersectionObserver(function (e, o) {
-          if (e[0].isIntersecting) { clip.classList.add('in'); o.disconnect(); }
-        }, { threshold: 0.25 }).observe(clip);
-      } else { clip.classList.add('in'); }
     })();
   </script>
   <script>
