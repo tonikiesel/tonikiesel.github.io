@@ -1063,7 +1063,7 @@
         var w = pre.clientWidth;
         if (w > 0 && w !== lastW) { lastW = w; reserve(); }
       }
-      if ('ResizeObserver' in window) new ResizeObserver(check).observe(pre.parentNode);
+      if ('ResizeObserver' in window) new ResizeObserver(function () { requestAnimationFrame(check); }).observe(pre.parentNode);
       window.addEventListener('resize', check);
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { lastW = 0; check(); });
       check();
@@ -1238,7 +1238,13 @@
       window.addEventListener('scroll', onScroll, { passive: true });
       window.addEventListener('resize', function () { build(); });
       window.addEventListener('tk-motion', function () { build(); });
-      if ('ResizeObserver' in window) new ResizeObserver(function () { build(); }).observe(cv);
+      var cvW = 0, cvH = 0;
+      if ('ResizeObserver' in window) new ResizeObserver(function () {
+        requestAnimationFrame(function () {
+          if (cv.clientWidth === cvW && cv.clientHeight === cvH) return;
+          cvW = cv.clientWidth; cvH = cv.clientHeight; build();
+        });
+      }).observe(cv);
       (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(build);
       build();
     })();
