@@ -433,6 +433,52 @@
     html.tritan .tb-gear { color: #f5a04a; }
     footer { padding: 2rem 0 3rem; color: var(--muted); font-size: .95rem; border-top: 1px solid var(--line); }
 
+    /* Kontakt: Text links, Formular rechts */
+    .contact-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: clamp(1.8rem, 5vw, 4rem); align-items: start; }
+    .contact-info p { margin: 0 0 1.2rem; color: var(--muted); max-width: 26rem; }
+    .contact-alt a { font-weight: 600; word-break: break-all; }
+    .contact-gh {
+      display: flex; align-items: center; gap: .9rem; max-width: 22rem; margin-top: 1.6rem; padding: .85rem 1.1rem;
+      color: var(--ink); text-decoration: none;
+    }
+    .contact-gh > * { position: relative; z-index: 1; }
+    .contact-gh-icon { display: grid; place-items: center; width: 2.4rem; height: 2.4rem; border-radius: 50%; border: 1px solid rgba(120,175,230,.3); color: var(--act); flex-shrink: 0; }
+    .contact-gh-icon svg { width: 1.25rem; height: 1.25rem; }
+    .contact-gh-text { display: flex; flex-direction: column; line-height: 1.3; font-size: .9rem; color: var(--muted); }
+    .contact-gh-text strong { color: var(--ink); font-size: 1rem; }
+    .contact-gh:focus-visible { outline: 3px solid var(--act); outline-offset: 3px; border-radius: 14px; }
+    .contact-form { padding: clamp(1.2rem, 3vw, 2rem); }
+    .contact-form > * { position: relative; z-index: 1; }
+    .field { margin-bottom: 1.1rem; }
+    .field label { display: block; margin-bottom: .4rem; font-size: .9rem; font-weight: 600; color: var(--ink); }
+    .req { color: var(--hint); }
+    .field input, .field textarea {
+      display: block; width: 100%; padding: .75rem .9rem; font: 400 1rem/1.5 var(--font); color: var(--ink);
+      background: rgba(9,15,21,.65); border: 1px solid var(--line); border-radius: 8px;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .field textarea { min-height: 8.5rem; resize: vertical; }
+    .field input::placeholder, .field textarea::placeholder { color: var(--muted); opacity: .7; }
+    .field input:focus, .field textarea:focus { outline: none; border-color: var(--act); box-shadow: 0 0 0 3px rgba(106,163,255,.22); }
+    .field-err { display: none; margin: .35rem 0 0; font-size: .85rem; color: #ff8a8a; }
+    .field.bad input, .field.bad textarea { border-color: #ff6b6b; box-shadow: 0 0 0 3px rgba(255,107,107,.15); }
+    .field.bad .field-err { display: block; }
+    .hp { position: absolute !important; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+    .form-foot { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 1.4rem; }
+    .form-req { font-size: .85rem; color: var(--muted); }
+    .contact-form .btn { border: 0; cursor: pointer; font: 600 1rem var(--font); }
+    .contact-form .btn:focus-visible { outline: 3px solid var(--act); outline-offset: 3px; }
+    .contact-form .btn[disabled] { opacity: .65; cursor: progress; }
+    .form-note { margin: 1rem 0 0; font-size: .8rem; line-height: 1.5; color: var(--muted); }
+    .form-status { margin: 0; font-size: .95rem; font-weight: 600; }
+    .form-status:not(:empty) { margin-top: 1rem; padding: .75rem .9rem; border-radius: 8px; }
+    .form-status.ok { color: #7ee2a8; background: rgba(47,208,122,.1); border: 1px solid rgba(47,208,122,.35); }
+    .form-status.err { color: #ff8a8a; background: rgba(255,107,107,.08); border: 1px solid rgba(255,107,107,.35); }
+    html.tritan .field input:focus, html.tritan .field textarea:focus { box-shadow: 0 0 0 3px rgba(245,160,74,.25); }
+    @media (max-width: 760px) {
+      .contact-grid { grid-template-columns: 1fr; }
+    }
+
     /* Abtauch-Übergang: Kühlflüssigkeit steigt auf */
     .dive { position: fixed; inset: 0; z-index: 50; overflow: hidden; pointer-events: none; visibility: hidden; }
     .dive.rise, .dive.exit { visibility: visible; pointer-events: auto; }
@@ -542,6 +588,13 @@
     html.light.tritan .revisit { background: linear-gradient(90deg, rgba(180,87,10,.08), rgba(255,255,255,.6)); border-color: rgba(180,87,10,.3); }
     html.light.tritan .revisit-icon { background: rgba(180,87,10,.07); border-color: rgba(180,87,10,.3); }
     html.light .dive-msg { color: #f2fbff; text-shadow: 0 0 24px rgba(10,60,120,.55), 0 0 60px rgba(120,200,255,.45); }
+    html.light .field input, html.light .field textarea { background: #fff; border-color: #b9c9d8; }
+    html.light .field input:focus, html.light .field textarea:focus { box-shadow: 0 0 0 3px rgba(29,104,201,.18); }
+    html.light .field-err, html.light .form-status.err { color: #c0262d; }
+    html.light .field.bad input, html.light .field.bad textarea { border-color: #d0343b; box-shadow: 0 0 0 3px rgba(208,52,59,.12); }
+    html.light .form-status.ok { color: #13703f; background: rgba(30,160,90,.1); border-color: rgba(30,160,90,.35); }
+    html.light .form-status.err { background: rgba(208,52,59,.07); border-color: rgba(208,52,59,.35); }
+    html.light .contact-gh-icon { border-color: rgba(29,104,201,.3); }
     html.light .coolant { background: linear-gradient(rgba(70,150,215,0) 0, rgba(70,150,215,.9) 22vh, #3f8fd0 40vh, #1f5f99 100%); }
     html.light .ring::before { border-color: rgba(20,120,220,.95); box-shadow: 0 0 8px rgba(20,120,220,.45), inset 0 0 6px rgba(20,120,220,.25); }
     html.light .ring.link::before { border-color: rgba(220,110,10,.95); box-shadow: 0 0 10px rgba(220,110,10,.5); }
@@ -705,11 +758,45 @@
     </section>
 
     <section id="kontakt">
-      <h2>Kontakt</h2>
-      <p class="text">
-        Schreib mir gern eine E-Mail:
-        <a href="mailto:kiesel.99@protonmail.com">kiesel.99@protonmail.com</a>
-      </p>
+      <div class="contact-grid">
+        <div class="contact-info">
+          <h2>Kontakt</h2>
+          <p>Du hast einen Praktikumsplatz, ein Projekt oder einfach eine Frage? Schreib mir, ich melde mich zeitnah zurück.</p>
+          <p class="contact-alt">Lieber direkt per E-Mail?<br><a href="mailto:kiesel.99@protonmail.com">kiesel.99@protonmail.com</a></p>
+          <a class="glass contact-gh" href="https://github.com/tonikiesel" target="_blank" rel="noopener">
+            <span class="contact-gh-icon"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></span>
+            <span class="contact-gh-text"><strong>GitHub</strong>tonikiesel</span>
+          </a>
+        </div>
+        <form class="glass contact-form" id="contactForm" action="https://formspree.io/f/xoejqaqk" method="POST">
+          <div class="field">
+            <label for="cfName">Name <span class="req" aria-hidden="true">*</span></label>
+            <input id="cfName" name="name" type="text" autocomplete="name" placeholder="Max Mustermann" required aria-describedby="cfNameErr">
+            <p class="field-err" id="cfNameErr">Bitte gib deinen Namen an.</p>
+          </div>
+          <div class="field">
+            <label for="cfMail">E-Mail <span class="req" aria-hidden="true">*</span></label>
+            <input id="cfMail" name="email" type="email" autocomplete="email" placeholder="deine@mail.de" required aria-describedby="cfMailErr">
+            <p class="field-err" id="cfMailErr">Bitte gib eine gültige E-Mail-Adresse an.</p>
+          </div>
+          <div class="field">
+            <label for="cfSubject">Betreff</label>
+            <input id="cfSubject" name="_subject" type="text" placeholder="Praktikum, Projekt oder Sonstiges">
+          </div>
+          <div class="field">
+            <label for="cfMsg">Nachricht <span class="req" aria-hidden="true">*</span></label>
+            <textarea id="cfMsg" name="message" rows="5" placeholder="Worum geht es? Schreib mir gern ein paar Zeilen." required aria-describedby="cfMsgErr"></textarea>
+            <p class="field-err" id="cfMsgErr">Bitte schreib mir eine kurze Nachricht.</p>
+          </div>
+          <div class="hp" aria-hidden="true"><label for="cfHp">Dieses Feld bitte leer lassen</label><input id="cfHp" type="text" name="_gotcha" tabindex="-1" autocomplete="off"></div>
+          <div class="form-foot">
+            <span class="form-req"><span aria-hidden="true">*</span> Pflichtfeld</span>
+            <button class="btn" type="submit">Nachricht senden</button>
+          </div>
+          <p class="form-note">Deine Angaben werden über den Dienst Formspree an mich weitergeleitet und nur genutzt, um dir zu antworten.</p>
+          <p class="form-status" id="cfStatus" role="status" aria-live="polite"></p>
+        </form>
+      </div>
     </section>
 
     <aside class="glass revisit" aria-label="Hinweis für wiederkehrende Besucher">
@@ -1333,6 +1420,52 @@
       var ph = document.querySelector('.intro-photo');
       if (!ph || !('IntersectionObserver' in window)) return;
       new IntersectionObserver(function (e) { ph.classList.toggle('paused', !e[0].isIntersecting); }).observe(ph);
+    })();
+  </script>
+  <script>
+    /* Kontaktformular: prüft Pflichtfelder und sendet ohne Seitenwechsel an Formspree */
+    (function () {
+      var form = document.getElementById('contactForm');
+      if (!form || !window.fetch || !window.FormData) return;
+      form.setAttribute('novalidate', '');
+      var status = document.getElementById('cfStatus');
+      var btn = form.querySelector('button[type="submit"]');
+      var label = btn.textContent;
+      var fields = Array.prototype.slice.call(form.querySelectorAll('[required]'));
+      function ok(el) {
+        var v = el.value.trim();
+        if (!v) return false;
+        if (el.type === 'email') return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+        return true;
+      }
+      function mark(el) {
+        var good = ok(el);
+        el.closest('.field').classList.toggle('bad', !good);
+        el.setAttribute('aria-invalid', String(!good));
+        return good;
+      }
+      fields.forEach(function (el) {
+        el.addEventListener('blur', function () { if (el.value.trim()) mark(el); });
+        el.addEventListener('input', function () { if (el.closest('.field').classList.contains('bad')) mark(el); });
+      });
+      function say(text, kind) { status.textContent = text; status.className = 'form-status' + (kind ? ' ' + kind : ''); }
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var first = null;
+        fields.forEach(function (el) { if (!mark(el) && !first) first = el; });
+        if (first) { say('Bitte prüf die markierten Felder.', 'err'); first.focus(); return; }
+        btn.disabled = true; btn.textContent = 'Wird gesendet …'; say('');
+        fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } })
+          .then(function (r) {
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            form.reset();
+            say('Danke! Deine Nachricht ist angekommen, ich melde mich bald bei dir.', 'ok');
+          })
+          .catch(function () {
+            say('Das hat leider nicht geklappt. Versuch es bitte gleich nochmal oder schreib mir direkt per E-Mail.', 'err');
+          })
+          .then(function () { btn.disabled = false; btn.textContent = label; });
+      });
     })();
   </script>
   <script>
