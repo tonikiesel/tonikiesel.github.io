@@ -138,7 +138,23 @@
     .intro-text { text-shadow: 0 0 12px rgba(13,20,27,.95), 0 0 4px rgba(13,20,27,.9); }
     .intro-name { margin: 0; font-size: clamp(2rem, 5.2vw, 4rem); font-weight: 200; letter-spacing: .14em; line-height: 1.1; text-transform: uppercase; color: var(--ink); }
     .intro-hi { display: block; margin-bottom: .35em; font-size: clamp(1rem, 2.1vw, 1.45rem); font-weight: 400; letter-spacing: .08em; text-transform: none; color: var(--soft); }
+    .stats { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); max-width: 36rem; margin: 1.4rem 0 .5rem; padding: 0; border-radius: 14px; background: rgba(22,30,40,.66); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); border: 1px solid rgba(120,175,230,.22); box-shadow: 0 10px 28px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.04); text-shadow: none; }
+    .stats li { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; gap: .5rem; padding: 1.05rem .8rem 1rem; }
+    .stats li + li::before { content: ""; position: absolute; left: 0; top: 18%; bottom: 18%; width: 1px; background: linear-gradient(180deg, rgba(120,175,230,0), rgba(120,175,230,.35), rgba(120,175,230,0)); }
+    .stat-num { font-family: var(--font); font-weight: 300; font-size: clamp(1.7rem, 3.2vw, 2.3rem); line-height: 1; letter-spacing: .06em; font-variant-numeric: tabular-nums; color: var(--soft); text-shadow: 0 0 18px rgba(110,175,255,.35); }
+    .stat-label { font-family: var(--font); font-size: .66rem; font-weight: 500; line-height: 1.4; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+    @media (max-width: 520px) { .stats li { padding: .85rem .45rem; } .stat-label { font-size: .58rem; letter-spacing: .08em; } }
+    html.light .stats { background: rgba(255,255,255,.72); border-color: rgba(40,100,170,.18); box-shadow: 0 14px 36px rgba(30,70,120,.12), inset 0 1px 0 rgba(255,255,255,.8); }
+    html.light .stats li + li::before { background: linear-gradient(180deg, rgba(40,100,170,0), rgba(40,100,170,.25), rgba(40,100,170,0)); }
+    html.light .stat-num { text-shadow: none; }
+    .stat-num { display: inline-block; transform-origin: center; }
+    .stat-num.rolling { opacity: .55; }
 
+    .stat-num .inf { display: block; width: 1.45em; height: .95em; fill: none; stroke: currentColor; stroke-width: .9; stroke-linejoin: round; filter: drop-shadow(0 0 8px rgba(110,175,255,.35)); }
+
+    html.light .stat-num .inf { filter: none; }
+    .stat-num.pop { animation: statPop .45s ease-out; }
+    @keyframes statPop { 0% { transform: scale(1.22); filter: brightness(1.6); } 100% { transform: none; filter: none; } }
     .intro-role { margin: .7rem 0 1.2rem; font-size: clamp(1rem, 2.3vw, 1.6rem); font-weight: 300; letter-spacing: .06em; line-height: 1.3; text-transform: uppercase; color: var(--soft); }
     .intro-text p:not(.intro-role) { margin: 0 0 .6rem; max-width: 36rem; font-weight: 300; }
     .intro-line { max-width: 36rem; height: 1px; margin: 1.6rem 0 1rem; background: linear-gradient(90deg, rgba(106,163,255,.85), rgba(106,163,255,.12)); }
@@ -712,6 +728,11 @@
           <p class="intro-role">Angehender Fachinformatiker für Systemintegration</p>
           <p>Ich komme aus dem Bäckerhandwerk und starte gerade in die IT, mit dem Ziel, Fachinformatiker für Systemintegration zu werden.</p>
           <p>Technik verstehen, ausprobieren und Probleme Schritt für Schritt lösen: Das treibt mich dabei jeden Tag an.</p>
+          <ul class="stats">
+            <li><span class="stat-num" aria-hidden="true" data-v="09">09</span><span class="sr">09</span><span class="stat-label">Jahre Bäckerhandwerk</span></li>
+            <li><span class="stat-num" aria-hidden="true" data-v="inf"><svg class="inf" viewBox="0 0 24 16" aria-hidden="true"><path d="M12 8C10 5.3 8 4 6 4a4 4 0 0 0 0 8c2 0 4-1.3 6-4zm0 0c2 2.7 4 4 6 4a4 4 0 0 0 0-8c-2 0-4 1.3-6 4z"/></svg></span><span class="sr">unendlich</span><span class="stat-label">Interesse an Systemen</span></li>
+            <li><span class="stat-num" aria-hidden="true" data-v="01">01</span><span class="sr">01</span><span class="stat-label">Bewusster Wechsel in die IT</span></li>
+          </ul>
           <div class="intro-line"></div>
           <div class="intro-links">
             <a href="https://github.com/tonikiesel" target="_blank" rel="noopener" aria-label="Toni Kiesel auf GitHub">
@@ -950,6 +971,40 @@
       go.addEventListener('click', function (e) { e.preventDefault(); plunge(false); });
       /* Wiederkehrende Besucher tauchen automatisch ab, mit Begrüßung im Wasser */
       if (returning) plunge(true);
+    })();
+  </script>
+  <script>
+    /* Kennzahlen: Ziffern rollen kurz wie im Terminal und rasten dann nacheinander ein */
+    (function () {
+      var root = document.documentElement;
+      var box = document.querySelector('.stats');
+      if (!box) return;
+      var nums = box.querySelectorAll('.stat-num');
+      var done = false, seen = false, unlockedAt = 0;
+      function rnd() { return String(Math.floor(Math.random() * 10)) + Math.floor(Math.random() * 10); }
+      function run() {
+        if (done) return; done = true;
+        if (root.classList.contains('no-motion')) return;
+        Array.prototype.forEach.call(nums, function (el, i) {
+          var v = el.getAttribute('data-v'), end = 700 + i * 350, html = el.innerHTML;
+          el.classList.add('rolling');
+          var t = setInterval(function () { el.textContent = rnd(); }, 55);
+          setTimeout(function () {
+            clearInterval(t); el.innerHTML = html; el.classList.remove('rolling'); el.classList.add('pop');
+            setTimeout(function () { el.classList.remove('pop'); }, 500);
+          }, end);
+        });
+      }
+      function check() {
+        if (done || !seen || !root.classList.contains('unlocked')) return;
+        if (!unlockedAt) unlockedAt = Date.now();
+        setTimeout(run, 600);   /* Tauch-Übergang erst ausklingen lassen */
+      }
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (es) { if (es[0].isIntersecting) { seen = true; check(); } }, { threshold: .6 }).observe(box);
+      } else { seen = true; }
+      new MutationObserver(check).observe(root, { attributes: true, attributeFilter: ['class'] });
+      check();
     })();
   </script>
   <script>
