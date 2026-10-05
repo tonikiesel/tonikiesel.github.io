@@ -13,7 +13,7 @@
       var m = get('tk-motion');
       var os = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (m === 'off' || (m !== 'on' && os)) r.classList.add('no-motion');
-      if (get('tk-skip') === '1') r.classList.add('unlocked', 'returning');
+      if (get('tk-skip') === '1') { r.classList.add('returning'); if (r.classList.contains('no-motion')) r.classList.add('unlocked'); }
       if (get('tk-tritan') === '1') r.classList.add('tritan');
       if (get('tk-light') === '1') r.classList.add('light');
       window.tkNoMotion = function () { return r.classList.contains('no-motion'); };
@@ -447,6 +447,18 @@
       position: absolute; bottom: 0; border-radius: 50%; opacity: 0;
       background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.35), rgba(200,235,255,.06) 60%); border: 1px solid rgba(200,235,255,.4);
     }
+    /* Wiederkehrende Besucher: kein Startbild, das Abtauchen startet von selbst */
+    html.returning .start { display: none; }
+    .dive-msg {
+      position: absolute; inset: 0; z-index: 1; display: grid; place-items: center; padding: 1.5rem;
+      margin: 0; text-align: center; color: #c8f0ff; opacity: 0;
+      font-size: clamp(2.8rem, 8vw, 6.5rem); line-height: 1.05; font-weight: 800; letter-spacing: -0.035em;
+      text-shadow: 0 0 28px rgba(34,180,255,.45), 0 0 70px rgba(34,180,255,.25);
+    }
+    .dive.welcome.rise .dive-msg { animation: msgIn .7s cubic-bezier(.2,.7,.3,1) .45s both; }
+    .dive.welcome.exit .dive-msg { opacity: 1; animation: msgOut .6s ease both; }
+    @keyframes msgIn { from { opacity: 0; transform: translateY(24px) scale(.97); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+    @keyframes msgOut { to { opacity: 0; transform: translateY(-18px); filter: blur(4px); } }
     .dive.rise .bubble, .dive.exit .bubble { animation-name: bubble; animation-timing-function: cubic-bezier(.4,0,.6,1); animation-fill-mode: both; }
     @keyframes bubble {
       0% { transform: translate3d(0, 0, 0); opacity: 0; }
@@ -529,6 +541,7 @@
     html.light .revisit-icon { background: rgba(29,104,201,.08); border-color: rgba(29,104,201,.3); }
     html.light.tritan .revisit { background: linear-gradient(90deg, rgba(180,87,10,.08), rgba(255,255,255,.6)); border-color: rgba(180,87,10,.3); }
     html.light.tritan .revisit-icon { background: rgba(180,87,10,.07); border-color: rgba(180,87,10,.3); }
+    html.light .dive-msg { color: #f2fbff; text-shadow: 0 0 24px rgba(10,60,120,.55), 0 0 60px rgba(120,200,255,.45); }
     html.light .coolant { background: linear-gradient(rgba(70,150,215,0) 0, rgba(70,150,215,.9) 22vh, #3f8fd0 40vh, #1f5f99 100%); }
     html.light .ring::before { border-color: rgba(20,120,220,.95); box-shadow: 0 0 8px rgba(20,120,220,.45), inset 0 0 6px rgba(20,120,220,.25); }
     html.light .ring.link::before { border-color: rgba(220,110,10,.95); box-shadow: 0 0 10px rgba(220,110,10,.5); }
@@ -560,7 +573,7 @@
           <button class="switch" id="setMotion" type="button" role="switch" aria-checked="true"></button>
         </div>
         <div class="set-row">
-          <label for="setSkip"><span class="set-name">Direkt zum Profil</span><span class="set-desc">Beim nächsten Besuch ohne Abtauchen-Sperre starten</span></label>
+          <label for="setSkip"><span class="set-name">Direkt zum Profil</span><span class="set-desc">Beim nächsten Besuch automatisch abtauchen</span></label>
           <button class="switch" id="setSkip" type="button" role="switch" aria-checked="false"></button>
         </div>
         <div class="set-row">
@@ -572,7 +585,7 @@
     </div>
   </header>
   <div class="backdrop" aria-hidden="true"></div>
-  <div class="dive" id="dive" aria-hidden="true"><div class="coolant"></div></div>
+  <div class="dive" id="dive" aria-hidden="true"><div class="coolant"></div><p class="dive-msg">Willkommen zurück</p></div>
 
   <section class="start" aria-label="Einleitung">
     <div class="start-inner">
@@ -714,7 +727,6 @@
       var intro = document.getElementById('intro');
       var dive = document.getElementById('dive');
       if (!go || !intro) return;
-      if (root.classList.contains('returning')) go.textContent = 'Willkommen zurück – weiter zum Profil';
       function show(instant) {
         if (!root.classList.contains('unlocked')) root.classList.add('unlocked', 'just-unlocked');
         var start = document.querySelector('.start');
@@ -723,7 +735,9 @@
         intro.setAttribute('tabindex', '-1');
         intro.focus({ preventScroll: true });
       }
+      var returning = root.classList.contains('returning');
       if (!dive) {
+        if (returning) { show(true); return; }
         go.addEventListener('click', function (e) { e.preventDefault(); show(false); });
         return;
       }
@@ -744,16 +758,20 @@
         }
       }
       var busy = false;
-      go.addEventListener('click', function (e) {
-        e.preventDefault();
+      function plunge(welcome) {
         if (busy) return;
         if (window.tkNoMotion()) { show(true); return; }
         busy = true;
         makeBubbles();
-        dive.className = 'dive rise';
-        setTimeout(function () { show(true); dive.className = 'dive exit'; }, 1050);
-        setTimeout(function () { dive.className = 'dive'; busy = false; }, 2050);
-      });
+        var extra = welcome ? ' welcome' : '';
+        var hold = welcome ? 1900 : 1050;   /* Begrüßung kurz stehen lassen */
+        dive.className = 'dive rise' + extra;
+        setTimeout(function () { show(true); dive.className = 'dive exit' + extra; }, hold);
+        setTimeout(function () { dive.className = 'dive'; busy = false; }, hold + 1000);
+      }
+      go.addEventListener('click', function (e) { e.preventDefault(); plunge(false); });
+      /* Wiederkehrende Besucher tauchen automatisch ab, mit Begrüßung im Wasser */
+      if (returning) plunge(true);
     })();
   </script>
   <script>
