@@ -126,6 +126,7 @@
       -webkit-mask-image: linear-gradient(90deg, #000 0%, rgba(0,0,0,.55) 26%, rgba(0,0,0,.55) 74%, #000 100%);
               mask-image: linear-gradient(90deg, #000 0%, rgba(0,0,0,.55) 26%, rgba(0,0,0,.55) 74%, #000 100%);
     }
+    .backdrop svg.tube-anim { will-change: transform; }
     .tube-flow  { animation: flow  var(--t, 12s) linear infinite; }
     .tube-sheen { animation: sheen var(--t2, 16s) linear infinite; }
     @keyframes flow  { to { stroke-dashoffset: -222.4; } }
@@ -161,19 +162,23 @@
     .intro-links a:hover { color: #fff; background: rgba(106,163,255,.15); transform: translateY(-2px); }
     .intro-links svg { width: 1.7rem; height: 1.7rem; display: block; }
     /* Foto: Lichtpunkt mit Schweif läuft im Uhrzeigersinn um den Rahmen */
-    @property --a { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
-    @keyframes orbit { to { --a: 360deg; } }
     .intro-photo { position: relative; width: clamp(11rem, 22vw, 16rem); aspect-ratio: 5 / 7; border-radius: 10px; border: 1px solid rgba(120,175,230,.4); box-shadow: 0 16px 44px rgba(0,0,0,.4), 0 0 30px rgba(34,160,255,.12); }
     .intro-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 25%; display: block; transform: scaleX(-1); border-radius: 9px; }
-    .intro-photo::before, .intro-photo::after {
-      content: ""; position: absolute; inset: -3px; border-radius: 13px; padding: 3px; pointer-events: none;
-      background: conic-gradient(from var(--a), rgba(90,190,255,0) 0deg, rgba(90,190,255,0) 190deg, rgba(90,190,255,.4) 265deg, rgba(120,215,255,.85) 335deg, rgba(240,251,255,1) 358deg, rgba(90,190,255,0) 360deg);
+    /* Lichtpunkt: ein drehendes Farbrad hinter einer Rahmen-Maske. Gedreht wird per transform,
+       das übernimmt die Grafikkarte, statt den Verlauf in jedem Bild neu zu malen */
+    .intro-photo .orbit {
+      position: absolute; inset: -3px; z-index: 1; border-radius: 13px; padding: 3px; overflow: hidden; pointer-events: none;
       -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
       -webkit-mask-composite: xor; mask-composite: exclude;
-      animation: orbit 6s linear infinite;
     }
-    .intro-photo::after { inset: -5px; border-radius: 15px; padding: 5px; filter: blur(7px); opacity: 1; }
-    .intro-photo.paused::before, .intro-photo.paused::after { animation-play-state: paused; }
+    .intro-photo .orbit.glow { inset: -5px; border-radius: 15px; padding: 5px; filter: blur(7px); }
+    .intro-photo .orbit i {
+      position: absolute; left: 50%; top: 50%; width: 190%; aspect-ratio: 1; display: block;
+      background: conic-gradient(rgba(90,190,255,0) 0deg, rgba(90,190,255,0) 190deg, rgba(90,190,255,.4) 265deg, rgba(120,215,255,.85) 335deg, rgba(240,251,255,1) 358deg, rgba(90,190,255,0) 360deg);
+      transform: translate(-50%, -50%); will-change: transform; animation: spin 6s linear infinite;
+    }
+    @keyframes spin { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+    .intro-photo.paused .orbit i { animation-play-state: paused; }
     .profile { padding: 5rem 0 4rem; }
     .profile-head { text-align: center; margin-bottom: 3.5rem; }
     h1, h2.h1like {
@@ -811,7 +816,7 @@
             </a>
           </div>
         </div>
-        <div class="intro-photo"><img src="toni.jpg" width="600" height="600" alt="Porträt von Toni Kiesel"></div>
+        <div class="intro-photo"><span class="orbit" aria-hidden="true"><i></i></span><span class="orbit glow" aria-hidden="true"><i></i></span><img src="toni.jpg" width="600" height="600" alt="Porträt von Toni Kiesel"></div>
       </div>
     </section>
 
@@ -1349,14 +1354,14 @@
         return d + ' L' + last[0].toFixed(1) + ',' + last[1].toFixed(1);
       }
 
+      var io = null;
       function build() {
         var W = window.innerWidth;
         host.style.height = '0px';
         var H = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight, window.innerHeight);
         host.style.height = H + 'px';
         lastW = W; lastH = window.innerHeight;
-        var old = host.querySelector('svg');
-        if (old) host.removeChild(old);
+        Array.prototype.slice.call(host.querySelectorAll('svg')).forEach(function (o) { host.removeChild(o); });
         var rand = rng(SEED);
         var svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, 'aria-hidden': 'true', focusable: 'false' }, host);
         var defs = el('defs', {}, svg);
@@ -1413,17 +1418,23 @@
           [[w + 12, 0.10], [w + 7, 0.14], [w + 3, 0.20]].forEach(function (sh) {
             el('path', { d: d, fill: 'none', stroke: 'rgba(0,0,0,' + sh[1] + ')', 'stroke-width': sh[0], 'stroke-linejoin': 'round', transform: 'translate(4 7)' }, svg);
           });
-          var g = el('g', { opacity: back ? '0.34' : '0.52' }, svg);
+          var gop = back ? 0.34 : 0.52;
+          var g = el('g', { opacity: String(gop) }, svg);
           el('path', { d: d, fill: 'none', stroke: 'rgba(150,200,255,.14)', 'stroke-width': w }, g);
           el('path', { d: d, fill: 'none', stroke: 'rgba(8,18,30,.6)', 'stroke-width': core }, g);
           el('path', { d: d, fill: 'none', stroke: col, 'stroke-width': cw, opacity: '.3' }, g);
           el('path', { d: d, fill: 'none', stroke: 'rgba(210,245,255,.18)', 'stroke-width': 1.6 }, g);
 
-          var sheen = el('path', { d: d, fill: 'none', stroke: 'rgba(140,215,255,.32)', 'stroke-width': cw, 'stroke-linecap': 'round', 'stroke-dasharray': '46 174', 'class': 'tube-sheen' }, g);
+          /* Bewegte Striche liegen außerhalb der Gruppe mit Deckkraft: so muss der Browser
+             nicht bei jedem Bild die ganze Leitung neu zusammenrechnen */
+          var sheen = el('path', { d: d, fill: 'none', stroke: 'rgba(140,215,255,' + (0.32 * gop).toFixed(3) + ')', 'stroke-width': cw, 'stroke-linecap': 'round', 'stroke-dasharray': '46 174', 'class': 'tube-sheen' }, svgA);
           sheen.style.setProperty('--t2', (12 + rand() * 10).toFixed(1) + 's');
           sheen.style.animationDelay = '-' + (rand() * 12).toFixed(1) + 's';
 
-          var flow = el('path', { d: d, fill: 'none', stroke: 'rgba(225,250,255,.7)', 'stroke-width': back ? 3 : 4.5, 'stroke-linecap': 'round', 'stroke-dasharray': '0.1 61 0.1 23 0.1 97 0.1 41', 'class': 'tube-flow' }, g);
+          var flow = el('path', { d: d, fill: 'none', stroke: 'rgba(225,250,255,' + (0.7 * gop).toFixed(3) + ')', 'stroke-width': back ? 3 : 4.5, 'stroke-linecap': 'round', 'stroke-dasharray': '0.1 61 0.1 23 0.1 97 0.1 41', 'class': 'tube-flow' }, svgA);
+          anim.push(sheen, flow);
+          /* Kupplungen und Kappen wieder in einer eigenen Gruppe über den bewegten Strichen */
+          g = el('g', { opacity: String(gop) }, svg);
           flow.style.setProperty('--t', (9 + rand() * 9).toFixed(1) + 's');
           flow.style.animationDelay = '-' + (rand() * 9).toFixed(1) + 's';
           if (rand() < 0.25) { flow.style.animationDirection = 'reverse'; sheen.style.animationDirection = 'reverse'; }
@@ -1451,8 +1462,21 @@
             el('circle', { cx: e[0] + dv[0] * 8, cy: e[1] + dv[1] * 8, r: 2.2, fill: '#bfeaff' }, g);
           }
         }
+        var anim = [];
+        /* Eigene Ebene nur für die bewegten Striche: die aufwendigen, stillstehenden Rohre
+           müssen dann nicht in jedem Bild neu gezeichnet werden */
+        var svgA = el('svg', { viewBox: '0 0 ' + W + ' ' + H, 'aria-hidden': 'true', focusable: 'false', 'class': 'tube-anim' }, host);
+        host.appendChild(svgA);
         routes.filter(function (q) { return q.back; }).forEach(draw);    /* hinten zuerst */
         routes.filter(function (q) { return !q.back; }).forEach(draw);
+        /* Nur Leitungen in der Nähe des sichtbaren Bereichs bewegen sich, der Rest pausiert */
+        if (io) io.disconnect();
+        if ('IntersectionObserver' in window) {
+          io = new IntersectionObserver(function (es) {
+            es.forEach(function (e) { e.target.style.animationPlayState = e.isIntersecting ? 'running' : 'paused'; });
+          }, { rootMargin: '150px 0px' });
+          anim.forEach(function (a) { a.style.animationPlayState = 'paused'; io.observe(a); });
+        }
       }
 
       build();
