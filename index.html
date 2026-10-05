@@ -114,7 +114,7 @@
     /* Hintergrund des Profils: feine Linien und leuchtende Punkte */
     .stage { position: relative; padding-top: 3.25rem; }
     .backdrop {
-      position: absolute; top: 0; left: 0; width: 100%; z-index: 0; pointer-events: none;
+      position: absolute; top: 0; left: 0; width: 100%; z-index: 0; pointer-events: none; overflow: hidden;
       background:
         radial-gradient(circle 20rem at 18% 12%, rgba(34,180,255,.08), rgba(34,180,255,0)),
         radial-gradient(circle 22rem at 85% 45%, rgba(34,180,255,.07), rgba(34,180,255,0)),
@@ -397,6 +397,45 @@
     .tb-gear[aria-expanded="true"] svg { transform: rotate(60deg); }
     .tb-gear:focus-visible, .switch:focus-visible, .linkbtn:focus-visible { outline: 3px solid var(--act); outline-offset: 2px; }
 
+    /* Inhaltsverzeichnis: Knopf links neben dem Zahnrad, Liste fährt darunter aus */
+    .tb-actions { display: flex; align-items: center; gap: .5rem; flex-shrink: 0; }
+    .tb-nav-btn[aria-expanded="true"] svg { transform: none; }
+    html.js:not(.unlocked) .tb-nav { display: none; }
+    /* Inhaltsverzeichnis lebendiger: Glas-Optik, Einträge gleiten nacheinander herein */
+    .nav-panel { width: min(17rem, calc(100vw - 1.5rem)); padding: 1rem .7rem .7rem; overflow: hidden;
+      background: rgba(16,26,36,.92); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+    .nav-panel::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 2px;
+      background: linear-gradient(90deg, rgba(106,163,255,0), var(--act), rgba(106,163,255,0)); opacity: .8; }
+    .nav-panel .set-title { margin: 0 .55rem .55rem; font-size: .7rem; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; color: var(--soft); }
+    .nav-list { list-style: none; margin: 0; padding: 0; }
+    .nav-list li { opacity: 0; transform: translateX(10px); transition: opacity .3s ease, transform .3s cubic-bezier(.2,.7,.3,1); }
+    .nav-panel.open .nav-list li { opacity: 1; transform: none; }
+    .nav-list li:nth-child(2) { transition-delay: .03s; } .nav-list li:nth-child(3) { transition-delay: .06s; }
+    .nav-list li:nth-child(4) { transition-delay: .09s; } .nav-list li:nth-child(5) { transition-delay: .12s; }
+    .nav-list li:nth-child(6) { transition-delay: .15s; } .nav-list li:nth-child(7) { transition-delay: .18s; }
+    .nav-list li:nth-child(8) { transition-delay: .21s; }
+    .nav-list a {
+      position: relative; display: flex; align-items: center; gap: .75rem; padding: .6rem .7rem .6rem .9rem; border-radius: 9px;
+      font-size: .95rem; font-weight: 500; color: var(--ink); text-decoration: none; transition: background .25s, color .25s, padding .25s;
+    }
+    .nav-list a::before { content: ""; position: absolute; left: .3rem; top: 50%; width: 3px; height: 0; border-radius: 2px;
+      background: var(--act); box-shadow: 0 0 8px var(--act); transform: translateY(-50%); transition: height .25s ease; }
+    .nav-list a::after { content: "→"; margin-left: auto; font-size: .9rem; color: var(--act); opacity: 0; transform: translateX(-6px); transition: opacity .25s, transform .25s; }
+    .nav-no { width: 1.5rem; font-size: .68rem; font-weight: 600; letter-spacing: .08em; color: var(--muted); font-variant-numeric: tabular-nums; transition: color .25s; }
+    .nav-list a:hover, .nav-list a:focus-visible { background: rgba(106,163,255,.1); color: #fff; padding-left: 1.1rem; }
+    .nav-list a:hover::before, .nav-list a:focus-visible::before { height: 55%; }
+    .nav-list a:hover::after, .nav-list a:focus-visible::after { opacity: 1; transform: none; }
+    .nav-list a:hover .nav-no { color: var(--act); }
+    .nav-list a:focus-visible { outline: 2px solid var(--act); outline-offset: -2px; }
+    .nav-list a[aria-current="true"] { background: rgba(106,163,255,.14); color: var(--ink); }
+    .nav-list a[aria-current="true"]::before { height: 55%; }
+    .nav-list a[aria-current="true"] .nav-no { color: var(--act); }
+    .nav-list a[aria-current="true"]::after { content: ""; width: .42rem; height: .42rem; border-radius: 50%; background: var(--act); box-shadow: 0 0 8px var(--act); opacity: 1; transform: none; }
+    .nav-list a[aria-current="true"]:hover::after { content: "→"; width: auto; height: auto; background: none; box-shadow: none; }
+    html.light .nav-panel { background: rgba(255,255,255,.94); }
+    html.light .nav-list a:hover, html.light .nav-list a:focus-visible { background: rgba(29,104,201,.07); color: var(--act); }
+    html.light .nav-list a[aria-current="true"] { background: rgba(29,104,201,.09); }
+    html.no-motion .nav-list li { opacity: 1; transform: none; }
     .settings {
       position: absolute; right: 0; top: calc(100% + .7rem); width: min(21rem, calc(100vw - 1.5rem)); padding: 1.1rem 1.1rem .9rem;
       background: #101a24; border: 1px solid #33465a; border-radius: 12px; box-shadow: 0 18px 50px rgba(0,0,0,.55);
@@ -498,8 +537,16 @@
     /* Kontakt: kleine Kennung und große Überschrift über die ganze Breite */
     .contact-head { margin-bottom: clamp(1.6rem, 4vw, 2.6rem); }
     .eyebrow { margin: 0 0 .8rem; font-size: .74rem; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; color: var(--soft); }
-    .contact-title, .big-title { margin: 0; font-size: clamp(2.1rem, 6vw, 3.6rem); font-weight: 800; line-height: 1.06; letter-spacing: -.035em; color: var(--ink); }
-    .contact-title em, .big-title em { font-style: normal; color: var(--act); text-shadow: 0 0 18px rgba(106,163,255,.22); }
+    /* Große Abschnitts-Überschriften: mittig, fein und luftig wie „Über mich“ */
+    .sec-head, .contact-head { text-align: center; }
+    .sec-head .eyebrow, .contact-head .eyebrow { letter-spacing: .3em; padding-left: .3em; }
+    /* Nummer in der Kennung, passend zum Inhaltsverzeichnis */
+    .eb-no { color: var(--act); font-variant-numeric: tabular-nums; }
+    .eb-sep { display: inline-block; width: 1.4rem; height: 1px; margin: 0 .7rem; vertical-align: middle; background: currentColor; opacity: .45; }
+    @media (max-width: 520px) { .sec-head .eyebrow, .contact-head .eyebrow, .profile-eb { letter-spacing: .18em; font-size: .68rem; } .eb-sep { width: .9rem; margin: 0 .5rem; } }
+    .profile-eb { margin: 0 0 .9rem; font-size: .74rem; font-weight: 600; letter-spacing: .3em; padding-left: .3em; text-transform: uppercase; color: var(--soft); }
+    .contact-title, .big-title { margin: 0; font-size: clamp(1.9rem, 4.4vw, 3.1rem); font-weight: 300; line-height: 1.18; letter-spacing: .005em; color: var(--ink); }
+    .contact-title em, .big-title em { font-style: normal; font-weight: 600; color: var(--act); text-shadow: 0 0 18px rgba(106,163,255,.22); }
     html.tritan .contact-title em, html.tritan .big-title em { text-shadow: 0 0 18px rgba(245,160,74,.2); }
     html.light .contact-title em, html.light .big-title em { text-shadow: none; }
     .contact-info p strong { color: var(--ink); font-weight: 600; }
@@ -519,15 +566,25 @@
     .chips small { font-size: .72rem; color: var(--muted); }
     .skill-note { margin: 1.3rem 0 0; font-size: .82rem; line-height: 1.6; color: var(--muted); }
     .open-card { background: linear-gradient(160deg, rgba(106,163,255,.16), rgba(22,30,40,.7) 70%); border-color: rgba(106,163,255,.42); }
-    .open-card h3 { margin: 0 0 .8rem; font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800; letter-spacing: -.03em; line-height: 1.1; color: var(--ink); }
+    .open-card h3 { margin: 0 0 .8rem; font-size: clamp(1.45rem, 2.8vw, 1.85rem); font-weight: 600; letter-spacing: -.01em; line-height: 1.1; color: var(--ink); }
     .open-card p:not(.tag) { margin: 0; line-height: 1.65; color: var(--ink); opacity: .88; }
+    /* Warum ein Quereinsteiger: Einleitung links, drei Punkte mit Trennlinien rechts */
+    .why-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: clamp(1.8rem, 5vw, 4rem); align-items: start; }
+    .why-card { padding: clamp(1.3rem, 3vw, 1.8rem); max-width: 28rem; }
+    .why-card > * { position: relative; z-index: 1; }
+    .why-lead { margin: 0; font-size: clamp(1.05rem, 1.8vw, 1.22rem); font-weight: 300; line-height: 1.75; color: var(--ink); max-width: 28rem; }
+    .why-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid rgba(120,175,230,.45); }
+    .why-list li { padding: 1.15rem 0 1.2rem; border-bottom: 1px solid var(--line); }
+    .why-list h3 { margin: 0 0 .45rem; font-size: 1.05rem; font-weight: 600; color: var(--ink); }
+    .why-list p { margin: 0; line-height: 1.65; color: var(--muted); }
+    html.light .why-list { border-top-color: rgba(29,104,201,.45); }
+    @media (max-width: 760px) { .why-grid { grid-template-columns: 1fr; } }
     /* Konditionen: Einleitung links, Bedingungen als Liste rechts */
     .terms-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: clamp(1.8rem, 5vw, 4rem); align-items: start; }
-    .terms-intro .big-title { font-size: clamp(2.1rem, 4.6vw, 3rem); }
-    .terms-lead { margin: 1.2rem 0 1.6rem; color: var(--muted); max-width: 28rem; line-height: 1.65; }
+    .terms-lead { margin: 0 0 1.6rem; color: var(--muted); max-width: 28rem; line-height: 1.65; }
     .terms-card { padding: 1.3rem 1.4rem; max-width: 28rem; }
     .terms-card > * { position: relative; z-index: 1; }
-    .terms-card h3 { margin: 0 0 .55rem; font-size: 1.3rem; font-weight: 800; letter-spacing: -.02em; color: var(--ink); }
+    .terms-card h3 { margin: 0 0 .55rem; font-size: 1.2rem; font-weight: 600; letter-spacing: -.01em; color: var(--ink); }
     .terms-card p { margin: 0; line-height: 1.6; color: var(--muted); }
     .terms-list dl { margin: 0; border-top: 1px solid rgba(120,175,230,.45); }
     .terms-list dl > div { display: grid; grid-template-columns: 8.5rem minmax(0, 1fr); gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--line); }
@@ -750,6 +807,8 @@
         <span><span class="tb-status">sucht Praktikum</span><span class="tb-where"> · Raum Zwickau</span></span>
       </span>
     </div>
+    <div class="tb-actions">
+
     <div class="tb-set">
       <button class="tb-gear" id="gear" type="button" aria-expanded="false" aria-controls="settings" aria-label="Einstellungen">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -774,6 +833,25 @@
         </div>
         <p class="set-note">Deine Auswahl wird nur in diesem Browser gespeichert, und nur wenn du hier etwas änderst.</p>
       </div>
+    </div>
+    <nav class="tb-set tb-nav" aria-label="Inhaltsverzeichnis">
+      <button class="tb-gear tb-nav-btn" id="navBtn" type="button" aria-expanded="false" aria-controls="navPanel" aria-label="Inhaltsverzeichnis">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4.5" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4.5" cy="18" r="1.1" fill="currentColor" stroke="none"/></svg>
+      </button>
+      <div class="settings nav-panel" id="navPanel" hidden>
+        <p class="set-title">Inhalt</p>
+        <ul class="nav-list">
+          <li><a href="#intro"><span class="nav-no">00</span>Start</a></li>
+          <li><a href="#profil"><span class="nav-no">01</span>Über mich</a></li>
+          <li><a href="#kenntnisse"><span class="nav-no">02</span>Kenntnisse</a></li>
+          <li><a href="#projekte"><span class="nav-no">03</span>Projekte</a></li>
+          <li><a href="#lebenslauf"><span class="nav-no">04</span>Lebenslauf</a></li>
+          <li><a href="#warum"><span class="nav-no">05</span>Quereinsteiger</a></li>
+          <li><a href="#konditionen"><span class="nav-no">06</span>Konditionen</a></li>
+          <li><a href="#kontakt"><span class="nav-no">07</span>Kontakt</a></li>
+        </ul>
+      </div>
+    </nav>
     </div>
   </header>
   <div class="backdrop" aria-hidden="true"></div>
@@ -822,6 +900,7 @@
 
     <header class="profile" id="profil">
       <div class="profile-head">
+        <p class="eyebrow profile-eb"><span class="eb-no">01</span><span class="eb-sep" aria-hidden="true"></span>Profil</p>
         <h2 class="h1like">Über mich</h2>
         <p class="keywords">Analytisch, lösungsorientiert, detailgenau und gewissenhaft</p>
       </div>
@@ -844,7 +923,7 @@
 
     <section id="kenntnisse">
       <div class="sec-head">
-        <p class="eyebrow">Stand der Dinge</p>
+        <p class="eyebrow"><span class="eb-no">02</span><span class="eb-sep" aria-hidden="true"></span>Stand der Dinge</p>
         <h2 class="big-title">Was ich kann. Und was <br>mir noch <em>fehlt</em>.</h2>
       </div>
       <div class="skill-grid">
@@ -873,7 +952,7 @@
 
     <section id="projekte">
       <div class="sec-head">
-        <p class="eyebrow">Projekte</p>
+        <p class="eyebrow"><span class="eb-no">03</span><span class="eb-sep" aria-hidden="true"></span>Projekte</p>
         <h2 class="big-title">Ausprobiert, gebaut, <br><em>dazugelernt</em>.</h2>
       </div>
       <div class="about-frame proj-frame">
@@ -906,7 +985,7 @@
 
     <section id="lebenslauf">
       <div class="sec-head">
-        <p class="eyebrow">Lebenslauf</p>
+        <p class="eyebrow"><span class="eb-no">04</span><span class="eb-sep" aria-hidden="true"></span>Lebenslauf</p>
         <h2 class="big-title">Vom Backofen <br>in den <em>Serverraum</em>.</h2>
       </div>
       <div class="cv">
@@ -947,11 +1026,39 @@
       </div>
     </section>
 
+    <section id="warum">
+      <div class="sec-head">
+        <p class="eyebrow"><span class="eb-no">05</span><span class="eb-sep" aria-hidden="true"></span>Warum ein Quereinsteiger</p>
+        <h2 class="big-title">Kein Zufall, sondern <br>eine <em>Entscheidung</em>.</h2>
+      </div>
+      <div class="why-grid">
+        <div class="glass why-card">
+          <p class="why-lead">Neun Jahre Bäckerhandwerk, und dann alles auf Anfang? Genau so. Nicht aus einer Laune heraus, sondern weil ich weiß, wo ich hinwill.</p>
+        </div>
+        <ul class="why-list">
+          <li>
+            <h3>Ich habe es vorher getestet.</h3>
+            <p>Bevor die Umschulung losging, habe ich einen IT-Vorbereitungskurs gemacht und Grundlagen wie Netzwerktechnik und IT-Sicherheit kennengelernt. Danach war klar: Das ist meins.</p>
+          </li>
+          <li>
+            <h3>Ich kenne den Arbeitsalltag.</h3>
+            <p>Pünktlichkeit, Verantwortung, Abläufe im Team koordinieren und unter Zeitdruck trotzdem sauber arbeiten: Das muss mir niemand mehr beibringen. Du kannst dich darauf konzentrieren, mir die Technik zu zeigen.</p>
+          </li>
+          <li>
+            <h3>Technik ist auch mein Hobby.</h3>
+            <p>Auch nach Feierabend lässt mich Technik nicht los. Ich probiere Neues aus, richte Systeme ein und lerne dabei jedes Mal etwas dazu.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
     <section id="konditionen">
+      <div class="sec-head">
+        <p class="eyebrow"><span class="eb-no">06</span><span class="eb-sep" aria-hidden="true"></span>Konditionen</p>
+        <h2 class="big-title">Was dich das <em>kostet</em>.</h2>
+      </div>
       <div class="terms-grid">
         <div class="terms-intro">
-          <p class="eyebrow">Konditionen</p>
-          <h2 class="big-title">Was dich das <em>kostet</em>.</h2>
           <p class="terms-lead">Weniger, als du vielleicht denkst. Das Praktikum ist Teil meiner Umschulung bei der WBS Training SE, den Rahmen regelt der Bildungsträger.</p>
           <div class="glass terms-card">
             <h3>Sechs Monate Kennenlernen.</h3>
@@ -974,7 +1081,7 @@
 
     <section id="kontakt">
       <div class="contact-head">
-        <p class="eyebrow">Kontakt</p>
+        <p class="eyebrow"><span class="eb-no">07</span><span class="eb-sep" aria-hidden="true"></span>Kontakt</p>
         <h2 class="contact-title">Platz im Team frei?<br><em>Ping</em> mich an.</h2>
       </div>
       <div class="contact-grid">
@@ -1354,16 +1461,25 @@
         return d + ' L' + last[0].toFixed(1) + ',' + last[1].toFixed(1);
       }
 
-      var io = null;
+      var io = null, builtHB = 0;
+      /* Höhe des Inhalts ohne den Hintergrund selbst messen */
+      function measure() {
+        host.style.height = '0px';
+        return Math.max(document.documentElement.scrollHeight, document.body.scrollHeight, window.innerHeight);
+      }
       function build() {
         var W = window.innerWidth;
-        host.style.height = '0px';
-        var H = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight, window.innerHeight);
-        host.style.height = H + 'px';
+        var Hc = measure();
+        /* Etwas Vorrat nach unten zeichnen: Klappt z. B. das Impressum auf, sind die Rohre
+           schon da und müssen nicht neu verlegt werden (das hat vorher geruckelt) */
+        var H = Hc + (W < 600 ? 1800 : 1000);
+        builtHB = H;
+        host.style.height = Hc + 'px';
         lastW = W; lastH = window.innerHeight;
         Array.prototype.slice.call(host.querySelectorAll('svg')).forEach(function (o) { host.removeChild(o); });
         var rand = rng(SEED);
         var svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, 'aria-hidden': 'true', focusable: 'false' }, host);
+        svg.style.height = H + 'px';
         var defs = el('defs', {}, svg);
         var eg = el('radialGradient', { id: 'endGlow' }, defs);
         el('stop', { offset: '0', 'stop-color': '#22b4ff', 'stop-opacity': '.7' }, eg);
@@ -1466,6 +1582,7 @@
         /* Eigene Ebene nur für die bewegten Striche: die aufwendigen, stillstehenden Rohre
            müssen dann nicht in jedem Bild neu gezeichnet werden */
         var svgA = el('svg', { viewBox: '0 0 ' + W + ' ' + H, 'aria-hidden': 'true', focusable: 'false', 'class': 'tube-anim' }, host);
+        svgA.style.height = H + 'px';
         host.appendChild(svgA);
         routes.filter(function (q) { return q.back; }).forEach(draw);    /* hinten zuerst */
         routes.filter(function (q) { return !q.back; }).forEach(draw);
@@ -1490,7 +1607,12 @@
       if ('ResizeObserver' in window) {
         new ResizeObserver(function () {
           clearTimeout(timer);
-          timer = setTimeout(build, 200);
+          timer = setTimeout(function () {
+            /* Nur neu verlegen, wenn sich die Breite ändert oder der Vorrat nicht mehr reicht */
+            var hc = measure();
+            if (window.innerWidth === lastW && hc <= builtHB) { host.style.height = hc + 'px'; return; }
+            build();
+          }, 200);
         }).observe(document.body);
       }
     })();
@@ -1822,13 +1944,62 @@
     })();
   </script>
   <script>
+    /* Inhaltsverzeichnis: öffnen, schließen, zum Abschnitt springen und aktuellen Abschnitt markieren */
+    (function () {
+      var btn = document.getElementById('navBtn'), panel = document.getElementById('navPanel');
+      if (!btn || !panel) return;
+      var links = Array.prototype.slice.call(panel.querySelectorAll('a'));
+      function open() {
+        panel.hidden = false;
+        requestAnimationFrame(function () { panel.classList.add('open'); });
+        btn.setAttribute('aria-expanded', 'true');
+        (panel.querySelector('a[aria-current="true"]') || links[0]).focus();
+      }
+      function close(back) {
+        panel.classList.remove('open'); panel.hidden = true;
+        btn.setAttribute('aria-expanded', 'false');
+        if (back) btn.focus();
+      }
+      btn.addEventListener('click', function () { panel.hidden ? open() : close(false); });
+      document.addEventListener('click', function (e) {
+        if (!panel.hidden && !panel.contains(e.target) && !btn.contains(e.target)) close(false);
+      });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !panel.hidden) close(true); });
+      links.forEach(function (a) {
+        a.addEventListener('click', function (e) {
+          var t = document.querySelector(a.getAttribute('href'));
+          if (!t) return;
+          e.preventDefault(); close(false);
+          var slow = !(window.tkNoMotion && window.tkNoMotion());
+          t.scrollIntoView({ behavior: slow ? 'smooth' : 'instant', block: 'start' });
+          t.setAttribute('tabindex', '-1'); t.focus({ preventScroll: true });
+        });
+      });
+      /* Markiert den Abschnitt, der gerade in der Bildschirmmitte liegt */
+      if ('IntersectionObserver' in window) {
+        var map = {};
+        links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
+        var io = new IntersectionObserver(function (es) {
+          es.forEach(function (en) {
+            if (!en.isIntersecting) return;
+            links.forEach(function (a) { a.removeAttribute('aria-current'); });
+            var a = map[en.target.id]; if (a) a.setAttribute('aria-current', 'true');
+          });
+        }, { rootMargin: '-45% 0px -50% 0px' });
+        Object.keys(map).forEach(function (id) { var el = document.getElementById(id); if (el) io.observe(el); });
+      }
+    })();
+  </script>
+  <script>
     /* Zurück zum Anfang des Profils */
     (function () {
       var b = document.getElementById('toTop'), intro = document.getElementById('intro');
       if (!b) return;
       b.addEventListener('click', function () {
         var slow = !(window.tkNoMotion && window.tkNoMotion());
-        window.scrollTo({ top: 0, behavior: slow ? 'smooth' : 'instant' });
+        var bar = document.querySelector('.topbar');
+        var y = intro ? intro.getBoundingClientRect().top + window.scrollY - (bar ? bar.offsetHeight : 0) : 0;
+        window.scrollTo({ top: Math.max(0, y), behavior: slow ? 'smooth' : 'instant' });
         if (intro) { intro.setAttribute('tabindex', '-1'); intro.focus({ preventScroll: true }); }
       });
     })();
