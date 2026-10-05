@@ -65,7 +65,7 @@
     .ring.link.down::before { transform: scale(1.1); }
     @keyframes glow { 50% { box-shadow: 0 0 18px rgba(34,180,255,.95), inset 0 0 11px rgba(34,180,255,.5); } }
     @media (hover: hover) and (pointer: fine) {
-      html.has-ring, html.has-ring a, html.has-ring button, html.has-ring .btn, html.has-ring video { cursor: none; }
+      html.has-ring, html.has-ring * { cursor: none !important; }
     }
 
     /* Wellen beim Klicken: Tropfen fällt in PC-Kühlflüssigkeit */
@@ -137,6 +137,8 @@
     .intro-grid { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: clamp(2rem, 6vw, 5rem); align-items: center; }
     .intro-text { text-shadow: 0 0 12px rgba(13,20,27,.95), 0 0 4px rgba(13,20,27,.9); }
     .intro-name { margin: 0; font-size: clamp(2rem, 5.2vw, 4rem); font-weight: 200; letter-spacing: .14em; line-height: 1.1; text-transform: uppercase; color: var(--ink); }
+    .intro-hi { display: block; margin-bottom: .35em; font-size: clamp(1rem, 2.1vw, 1.45rem); font-weight: 400; letter-spacing: .08em; text-transform: none; color: var(--soft); }
+
     .intro-role { margin: .7rem 0 1.2rem; font-size: clamp(1rem, 2.3vw, 1.6rem); font-weight: 300; letter-spacing: .06em; line-height: 1.3; text-transform: uppercase; color: var(--soft); }
     .intro-text p:not(.intro-role) { margin: 0 0 .6rem; max-width: 36rem; font-weight: 300; }
     .intro-line { max-width: 36rem; height: 1px; margin: 1.6rem 0 1rem; background: linear-gradient(90deg, rgba(106,163,255,.85), rgba(106,163,255,.12)); }
@@ -431,7 +433,38 @@
     html.tritan .tb-dot, html.tritan .tb-dot::after { background: #e9eef3; }
     html.tritan .tb-dot { box-shadow: 0 0 0 2px #2fd07a; }
     html.tritan .tb-gear { color: #f5a04a; }
-    footer { padding: 2rem 0 3rem; color: var(--muted); font-size: .95rem; border-top: 1px solid var(--line); }
+    /* Impressum & Datenschutz: aufklappbar */
+    .legal { margin-top: 3rem; border-top: 1px solid var(--line); }
+    .legal summary {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.2rem 0;
+      list-style: none; cursor: pointer; color: var(--muted); font-size: .95rem; font-weight: 500;
+    }
+    .legal summary::-webkit-details-marker { display: none; }
+    .legal summary:hover, .legal[open] summary { color: var(--ink); }
+    .legal summary:focus-visible { outline: 3px solid var(--act); outline-offset: 4px; border-radius: 4px; }
+    .legal-chev {
+      width: 1.3rem; height: 1.3rem; flex-shrink: 0; fill: none; stroke: var(--act); stroke-width: 2.2;
+      stroke-linecap: round; stroke-linejoin: round; transform: rotate(180deg); transition: transform .3s ease;
+    }
+    .legal[open]:not(.closing) .legal-chev { transform: none; }
+    .legal-body { overflow: hidden; }
+    .legal-inner { padding: .4rem 0 1.5rem; }
+    .legal-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.6rem 2.5rem; }
+    .legal h3 { margin: 0 0 .5rem; font-size: 1rem; font-weight: 700; color: var(--ink); }
+    .legal p { margin: 0 0 .6rem; font-size: .92rem; line-height: 1.65; color: var(--muted); }
+    .legal strong { color: var(--ink); font-weight: 600; }
+    .legal-foot { margin-top: 1.4rem !important; padding-top: 1.2rem; border-top: 1px solid var(--line); font-size: .85rem !important; }
+    @media (max-width: 700px) { .legal-grid { grid-template-columns: 1fr; } }
+    .legal + footer { border-top: 1px solid var(--line); }
+    footer { padding: 2rem 0 3rem; color: var(--muted); font-size: .95rem; border-top: 1px solid var(--line); text-align: center; }
+    .status-line {
+      display: inline-flex; align-items: center; gap: .65rem; margin: 0; padding: .4rem .2rem;
+      font: 400 .9rem/1.4 ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace; color: var(--muted);
+    }
+    .status-line .tb-dot { width: .7rem; height: .7rem; box-shadow: 0 0 0 3px rgba(47,208,122,.18); }
+    html.tritan .status-line .tb-dot { box-shadow: 0 0 0 2px #2fd07a; }
+    @media (max-width: 420px) { .status-line { font-size: .78rem; gap: .5rem; } }
+    .copy { margin: .9rem 0 0; font-size: .8rem; opacity: .75; }
 
     /* Kontakt: Text links, Formular rechts */
     .contact-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: clamp(1.8rem, 5vw, 4rem); align-items: start; }
@@ -447,6 +480,26 @@
     .contact-gh-text { display: flex; flex-direction: column; line-height: 1.3; font-size: .9rem; color: var(--muted); }
     .contact-gh-text strong { color: var(--ink); font-size: 1rem; }
     .contact-gh:focus-visible { outline: 3px solid var(--act); outline-offset: 3px; border-radius: 14px; }
+    /* Nach oben: runder Knopf rechts unter dem Formular */
+    .contact-side { display: flex; flex-direction: column; }
+    .to-top {
+      position: relative; align-self: flex-end; margin-top: 1.2rem;
+      display: grid; place-items: center; width: 3rem; height: 3rem; padding: 0; border-radius: 50%;
+      color: var(--act); background: rgba(13,20,27,.72); border: 1px solid rgba(120,175,230,.35);
+      -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); box-shadow: 0 8px 24px rgba(0,0,0,.35);
+      transition: transform .25s ease, background .2s, color .2s, border-color .2s;
+    }
+    .to-top:hover { transform: translateY(-3px); }
+    .to-top svg { width: 1.25rem; height: 1.25rem; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+    .to-top:hover { background: var(--act); border-color: var(--act); color: #0c1218; }
+    .to-top:focus-visible { outline: 3px solid var(--act); outline-offset: 3px; }
+    html.light .to-top { background: rgba(255,255,255,.8); border-color: rgba(29,104,201,.35); box-shadow: 0 8px 22px rgba(30,60,100,.15); }
+    html.light .to-top:hover { color: #fff; }
+    .contact-gh + .contact-gh { margin-top: .8rem; }
+    .contact-phone { cursor: pointer; }
+    .phone-val { display: inline-block; transition: opacity .2s ease, filter .2s ease; }
+    .phone-val.swap { opacity: 0; filter: blur(4px); }
+    .contact-phone.shown .phone-val { color: var(--ink); font-weight: 600; letter-spacing: .02em; }
     .contact-form { padding: clamp(1.2rem, 3vw, 2rem); }
     .contact-form > * { position: relative; z-index: 1; }
     .field { margin-bottom: 1.1rem; }
@@ -642,7 +695,7 @@
 
   <section class="start" aria-label="Einleitung">
     <div class="start-inner">
-      <p class="drip-title" id="dripTitle"><span class="line">Lasst uns gemeinsam</span> <span class="line">in mein Profil abtauchen</span></p>
+      <p class="drip-title" id="dripTitle"><span class="line">Lass uns gemeinsam</span> <span class="line">in mein Profil abtauchen</span></p>
       <div class="start-cta">
         <span class="hint" aria-hidden="true"><i><svg viewBox="0 0 30 16"><path d="M4 3l11 10 11-10"/></svg></i><i><svg viewBox="0 0 30 16"><path d="M4 3l11 10 11-10"/></svg></i><i><svg viewBox="0 0 30 16"><path d="M4 3l11 10 11-10"/></svg></i></span>
         <a class="btn" href="#intro">Abtauchen</a>
@@ -655,7 +708,7 @@
     <section class="intro" id="intro" aria-label="Vorstellung">
       <div class="intro-grid">
         <div class="intro-text">
-          <h1 class="intro-name">Toni Kiesel</h1>
+          <h1 class="intro-name"><span class="intro-hi">Moin, ich bin</span> Toni Kiesel</h1>
           <p class="intro-role">Angehender Fachinformatiker für Systemintegration</p>
           <p>Ich komme aus dem Bäckerhandwerk und starte gerade in die IT, mit dem Ziel, Fachinformatiker für Systemintegration zu werden.</p>
           <p>Technik verstehen, ausprobieren und Probleme Schritt für Schritt lösen: Das treibt mich dabei jeden Tag an.</p>
@@ -672,7 +725,7 @@
 
     <header class="profile" id="profil">
       <div class="profile-head">
-        <h2 class="h1like">Profil – Moin, ich bin Toni</h2>
+        <h2 class="h1like">Über mich</h2>
         <p class="keywords">Analytisch, lösungsorientiert, detailgenau und gewissenhaft</p>
       </div>
 
@@ -762,12 +815,16 @@
         <div class="contact-info">
           <h2>Kontakt</h2>
           <p>Du hast einen Praktikumsplatz, ein Projekt oder einfach eine Frage? Schreib mir, ich melde mich zeitnah zurück.</p>
-          <p class="contact-alt">Lieber direkt per E-Mail?<br><a href="mailto:kiesel.99@protonmail.com">kiesel.99@protonmail.com</a></p>
           <a class="glass contact-gh" href="https://github.com/tonikiesel" target="_blank" rel="noopener">
             <span class="contact-gh-icon"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></span>
             <span class="contact-gh-text"><strong>GitHub</strong>tonikiesel</span>
           </a>
+          <a class="glass contact-gh contact-phone" id="phone" tabindex="0" role="button" data-p="64,61,59,59,67,62,67,68,43,59,65,60,43,68,63,54" aria-label="Telefonnummer anzeigen">
+            <span class="contact-gh-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+            <span class="contact-gh-text"><strong>Telefon</strong><span class="phone-val">Nummer anzeigen</span></span>
+          </a>
         </div>
+        <div class="contact-side">
         <form class="glass contact-form" id="contactForm" action="https://formspree.io/f/xoejqaqk" method="POST">
           <div class="field">
             <label for="cfName">Name <span class="req" aria-hidden="true">*</span></label>
@@ -796,6 +853,8 @@
           <p class="form-note">Deine Angaben werden über den Dienst Formspree an mich weitergeleitet und nur genutzt, um dir zu antworten.</p>
           <p class="form-status" id="cfStatus" role="status" aria-live="polite"></p>
         </form>
+        <button class="to-top" type="button" id="toTop" aria-label="Zurück zum Anfang" title="Zurück zum Anfang"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg></button>
+        </div>
       </div>
     </section>
 
@@ -804,7 +863,39 @@
       <p class="revisit-text"><strong>Du schaust öfter vorbei?</strong>Über das Zahnrad oben rechts kannst du einstellen, dass du beim nächsten Besuch direkt im Profil landest.</p>
       <button class="linkbtn" type="button" data-open-settings>Einstellungen öffnen</button>
     </aside>
-    <footer>© Toni Kiesel</footer>
+    <details class="legal" id="impressum">
+      <summary>
+        <span>Impressum &amp; Datenschutz</span>
+        <svg class="legal-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg>
+      </summary>
+      <div class="legal-body"><div class="legal-inner">
+        <div class="legal-grid">
+          <div>
+            <h3>Angaben gemäß § 5 DDG</h3>
+            <p>Toni Kiesel<br>Am Langen Hacken 90<br>03238 Finsterwalde<br>Deutschland</p>
+            <p>E-Mail: <a href="mailto:kiesel.99@protonmail.com">kiesel.99@protonmail.com</a></p>
+          </div>
+          <div>
+            <h3>Hosting</h3>
+            <p>Diese Website wird über <strong>GitHub Pages</strong> (GitHub, Inc., USA) bereitgestellt. Beim Aufruf der Website werden technisch notwendige Verbindungsdaten, insbesondere die IP-Adresse, verarbeitet, um die Seite auszuliefern und vor Missbrauch zu schützen.</p>
+          </div>
+          <div>
+            <h3>Kontaktformular</h3>
+            <p>Anfragen über das Kontaktformular werden über den Dienstleister <strong>Formspree</strong> (Formspree, Inc., USA) verarbeitet und per E-Mail weitergeleitet. Die übermittelten Angaben (Name, E-Mail-Adresse, Betreff, Nachricht) werden ausschließlich zur Bearbeitung der Anfrage verwendet und nicht an Dritte weitergegeben.</p>
+          </div>
+          <div>
+            <h3>Cookies und lokale Speicherung</h3>
+            <p>Diese Website setzt keine Cookies und verwendet keine Analyse- oder Werbedienste. Schriftarten und Bilder werden direkt von dieser Website geladen.</p>
+            <p>Werden über das Einstellungsmenü (Zahnrad) Anpassungen vorgenommen, wird die Auswahl im lokalen Speicher des Browsers (Local Storage) abgelegt, damit sie beim nächsten Besuch erhalten bleibt. Diese Daten verbleiben auf dem Endgerät und werden nicht übertragen. Sie lassen sich jederzeit über das Einstellungsmenü oder die Browsereinstellungen löschen.</p>
+          </div>
+        </div>
+        <p class="legal-foot">Rechtsgrundlage der Verarbeitung ist Art. 6 Abs. 1 lit. b und f DSGVO, für die lokale Speicherung § 25 Abs. 2 Nr. 2 TDDDG. Betroffene Personen haben das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung, das Recht auf Widerspruch sowie das Recht auf Beschwerde bei einer Datenschutz-Aufsichtsbehörde.</p>
+      </div></div>
+    </details>
+    <footer>
+      <p class="status-line"><span class="tb-dot" aria-hidden="true"></span><span>praktikant-toni · Status: wartet auf deine Antwort</span></p>
+      <p class="copy">© Toni Kiesel</p>
+    </footer>
   </main>
   </div>
   <script>
@@ -875,7 +966,7 @@
         if (!queued) { queued = true; requestAnimationFrame(draw); }
         document.documentElement.classList.add('has-ring');
         ring.classList.add('show');
-        var t = e.target.closest ? e.target.closest('a:not(.locked),button,.btn:not(.locked),video[controls]') : null;
+        var t = e.target.closest ? e.target.closest('a:not(.locked),button,summary,.btn:not(.locked),video[controls]') : null;
         ring.classList.toggle('link', !!t);
       });
       document.addEventListener('mousedown', function () { ring.classList.add('down'); });
@@ -889,7 +980,7 @@
         if (window.tkNoMotion()) return;
         if (e.detail === 0) return; /* per Tastatur ausgelöst: keine Welle */
         var w = document.createElement('div');
-        var onLink = e.target.closest && e.target.closest('a:not(.locked),button,.btn:not(.locked),video[controls]');
+        var onLink = e.target.closest && e.target.closest('a:not(.locked),button,summary,.btn:not(.locked),video[controls]');
         w.className = 'wave' + (onLink ? ' link' : '');
         w.style.left = e.clientX + 'px';
         w.style.top = e.clientY + 'px';
@@ -1205,8 +1296,8 @@
         ['o', 'Address: 185.199.109.153'],
         ['c', 'git push origin main'],
         ['k', '\u2713 Seite wird veröffentlicht'],
-        ['c', 'python3 hallo.py'],
-        ['o', 'Hallo Welt!']
+        ['c', 'python3 moin.py'],
+        ['o', 'Moin!']
       ];
       function esc(t) { return t.replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
       function line(l) {
@@ -1423,6 +1514,90 @@
     })();
   </script>
   <script>
+    /* Telefonnummer: steht nur verschlüsselt im Code und wird erst bei Hover, Fokus oder Antippen eingeblendet */
+    (function () {
+      var el = document.getElementById('phone');
+      if (!el) return;
+      var val = el.querySelector('.phone-val'), hint = val.textContent, num = null, shown = false;
+      function decode() {
+        if (!num) num = el.getAttribute('data-p').split(',').map(function (c) { return String.fromCharCode(c - 11); }).reverse().join('');
+        return num;
+      }
+      var timer = null;
+      function set(text) {
+        clearTimeout(timer);
+        val.classList.add('swap');
+        timer = setTimeout(function () { val.textContent = text; val.classList.remove('swap'); }, 150);
+      }
+      function kbFocus() { try { return el.matches(':focus-visible'); } catch (e) { return false; } }
+      function show() {
+        if (shown) return; shown = true;
+        var n = decode();
+        el.classList.add('shown');
+        el.setAttribute('href', 'tel:' + n.replace(/\s/g, ''));
+        el.removeAttribute('role');
+        el.setAttribute('aria-label', 'Anrufen: ' + n);
+        set(n);
+      }
+      function hide() {
+        if (!shown) return; shown = false;
+        el.classList.remove('shown');
+        el.removeAttribute('href');
+        el.setAttribute('role', 'button');
+        el.setAttribute('aria-label', 'Telefonnummer anzeigen');
+        set(hint);
+      }
+      var touch = false;
+      el.addEventListener('pointerdown', function (e) { touch = e.pointerType !== 'mouse'; });
+      el.addEventListener('mouseenter', function () { if (!touch) show(); });
+      el.addEventListener('mouseleave', function () { if (!touch && !kbFocus()) hide(); });
+      el.addEventListener('focus', function () { if (!touch && kbFocus()) show(); });
+      el.addEventListener('blur', function () { if (!el.matches(':hover')) hide(); });
+      document.addEventListener('pointerdown', function (e) { if (shown && !el.contains(e.target)) hide(); });
+      el.addEventListener('click', function (e) { if (!shown || !el.getAttribute('href')) { e.preventDefault(); show(); } });
+      el.addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && !shown) { e.preventDefault(); show(); } });
+    })();
+  </script>
+  <script>
+    /* Zurück zum Anfang des Profils */
+    (function () {
+      var b = document.getElementById('toTop'), intro = document.getElementById('intro');
+      if (!b) return;
+      b.addEventListener('click', function () {
+        var slow = !(window.tkNoMotion && window.tkNoMotion());
+        window.scrollTo({ top: 0, behavior: slow ? 'smooth' : 'instant' });
+        if (intro) { intro.setAttribute('tabindex', '-1'); intro.focus({ preventScroll: true }); }
+      });
+    })();
+  </script>
+  <script>
+    /* Impressum & Datenschutz: weich auf- und zuklappen (Höhe animiert per Web Animations API) */
+    (function () {
+      var box = document.querySelector('.legal');
+      if (!box || !box.animate) return;
+      var sum = box.querySelector('summary'), body = box.querySelector('.legal-body'), anim = null;
+      var ease = 'cubic-bezier(.4,0,.2,1)';
+      sum.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (window.tkNoMotion && window.tkNoMotion()) { box.open = !box.open; return; }
+        var opening = !box.open || box.classList.contains('closing');
+        var from = box.open ? body.getBoundingClientRect().height : 0;
+        if (anim) anim.cancel();
+        box.classList.toggle('closing', !opening);
+        box.open = true;
+        var to = opening ? body.scrollHeight : 0;
+        anim = body.animate(
+          [{ height: from + 'px', opacity: opening ? (from ? 1 : 0) : 1 }, { height: to + 'px', opacity: opening ? 1 : 0 }],
+          { duration: Math.max(220, Math.min(480, Math.abs(to - from) * .9)), easing: ease }
+        );
+        anim.onfinish = function () {
+          anim = null;
+          if (!opening) { box.open = false; box.classList.remove('closing'); }
+        };
+      });
+    })();
+  </script>
+  <script>
     /* Kontaktformular: prüft Pflichtfelder und sendet ohne Seitenwechsel an Formspree */
     (function () {
       var form = document.getElementById('contactForm');
@@ -1462,7 +1637,7 @@
             say('Danke! Deine Nachricht ist angekommen, ich melde mich bald bei dir.', 'ok');
           })
           .catch(function () {
-            say('Das hat leider nicht geklappt. Versuch es bitte gleich nochmal oder schreib mir direkt per E-Mail.', 'err');
+            say('Das hat leider nicht geklappt. Versuch es bitte gleich nochmal oder schreib mir an kiesel.99@protonmail.com.', 'err');
           })
           .then(function () { btn.disabled = false; btn.textContent = label; });
       });
