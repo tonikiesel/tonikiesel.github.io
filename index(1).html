@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Toni Kiesel – Profil</title>
+  <meta name="description" content="Profil von Toni Kiesel: analytisch, lösungsorientiert, detailgenau und gewissenhaft. Interesse an IT und Systemintegration.">
+  <script>
+    (function () {
+      var r = document.documentElement;
+      r.classList.add('js');
+      function get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+      var m = get('tk-motion');
+      var os = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (m === 'off' || (m !== 'on' && os)) r.classList.add('no-motion');
+      if (get('tk-skip') === '1') { r.classList.add('returning'); if (r.classList.contains('no-motion')) r.classList.add('unlocked'); }
+      if (get('tk-tritan') === '1') r.classList.add('tritan');
+      if (get('tk-light') === '1') r.classList.add('light');
+      window.tkNoMotion = function () { return r.classList.contains('no-motion'); };
+    })();
+  </script>
+  <link rel="preload" href="montserrat.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="tb-pill">
+      <span class="tb-dot" aria-hidden="true"></span>
+      <span class="tb-text">
+        <span class="tb-name">Toni Kiesel</span>
+        <span class="tb-role">Angehender Fachinformatiker für Systemintegration</span>
+        <span class="tb-div" aria-hidden="true"></span>
+        <span><span class="tb-status">sucht Praktikum</span><span class="tb-where"> · Raum Zwickau</span></span>
+      </span>
+    </div>
+    <div class="tb-actions">
+
+    <div class="tb-set">
+      <button class="tb-gear" id="gear" type="button" aria-expanded="false" aria-controls="settings" aria-label="Einstellungen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+      <div class="settings" id="settings" role="dialog" aria-label="Einstellungen" hidden>
+        <p class="set-title">Einstellungen</p>
+        <div class="set-row">
+          <label for="setLight"><span class="set-name">Helles Design <span class="beta">Beta</span></span><span class="set-desc">Helle Farben statt dunklem Unterwasser-Look</span></label>
+          <button class="switch" id="setLight" type="button" role="switch" aria-checked="false"></button>
+        </div>
+        <div class="set-row">
+          <label for="setMotion"><span class="set-name">Animationen</span><span class="set-desc">Tropfen, Übergänge und bewegte Effekte</span></label>
+          <button class="switch" id="setMotion" type="button" role="switch" aria-checked="true"></button>
+        </div>
+        <div class="set-row">
+          <label for="setSkip"><span class="set-name">Direkt zum Profil</span><span class="set-desc">Beim nächsten Besuch automatisch abtauchen</span></label>
+          <button class="switch" id="setSkip" type="button" role="switch" aria-checked="false"></button>
+        </div>
+        <div class="set-row">
+          <label for="setTritan"><span class="set-name">Farben bei Blau-Gelb-Sehschwäche</span><span class="set-desc">Angepasste Farben für Menschen mit Tritanopie</span></label>
+          <button class="switch" id="setTritan" type="button" role="switch" aria-checked="false"></button>
+        </div>
+        <p class="set-note">Deine Auswahl wird nur in diesem Browser gespeichert, und nur wenn du hier etwas änderst.</p>
+      </div>
+    </div>
+    <nav class="tb-set tb-nav" aria-label="Inhaltsverzeichnis">
+      <button class="tb-gear tb-nav-btn" id="navBtn" type="button" aria-expanded="false" aria-controls="navPanel" aria-label="Inhaltsverzeichnis">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.1" fill="currentColor" stroke="none"/><circle cx="4.5" cy="12" r="1.1" fill="currentColor" stroke="none"/><circle cx="4.5" cy="18" r="1.1" fill="currentColor" stroke="none"/></svg>
+      </button>
+      <div class="settings nav-panel" id="navPanel" hidden>
+        <p class="set-title">Inhalt</p>
+        <ul class="nav-list">
+          <li><a href="#intro"><span class="nav-no">00</span>Start</a></li>
+          <li><a href="#profil"><span class="nav-no">01</span>Über mich</a></li>
+          <li><a href="#kenntnisse"><span class="nav-no">02</span>Kenntnisse</a></li>
+          <li><a href="#projekte"><span class="nav-no">03</span>Projekte</a></li>
+          <li><a href="#lebenslauf"><span class="nav-no">04</span>Lebenslauf</a></li>
+          <li><a href="#warum"><span class="nav-no">05</span>Quereinsteiger</a></li>
+          <li><a href="#konditionen"><span class="nav-no">06</span>Konditionen</a></li>
+          <li><a href="#kontakt"><span class="nav-no">07</span>Kontakt</a></li>
+        </ul>
+      </div>
+    </nav>
+    </div>
+  </header>
+  <div class="backdrop" aria-hidden="true"></div>
+  <div class="dive" id="dive" aria-hidden="true"><div class="coolant"></div><p class="dive-msg">Willkommen zurück</p></div>
+
+  <section class="start" aria-label="Einleitung">
+    <div class="start-inner">
+      <div class="start-head">
+        <div class="start-who">
+          <p class="start-name">Toni Kiesel</p>
+          <p class="start-role">Angehender Fachinformatiker für Systemintegration<span class="start-sep" aria-hidden="true"> · </span><span class="start-seek">sucht Praktikum</span></p>
+        </div>
+        <p class="drip-title" id="dripTitle"><span class="line">Lass uns gemeinsam</span> <span class="line">in mein Profil abtauchen</span></p>
+      </div>
+      <div class="start-cta">
+        <span class="hint" aria-hidden="true"><i><svg viewBox="0 0 30 16"><path d="M4 3l11 10 11-10"/></svg></i><i><svg viewBox="0 0 30 16"><path d="M4 3l11 10 11-10"/></svg></i><i><svg viewBox="0 0 30 16"><path d="M4 3l11 10 11-10"/></svg></i></span>
+        <a class="btn" href="#intro">Abtauchen</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="stage">
+  <main>
+    <section class="intro" id="intro" aria-label="Vorstellung">
+      <div class="intro-grid">
+        <div class="intro-text">
+          <h1 class="intro-name"><span class="intro-hi">Moin, ich bin</span> Toni Kiesel</h1>
+          <p class="intro-role">Angehender Fachinformatiker für Systemintegration</p>
+          <p>Ich komme aus dem Bäckerhandwerk und starte gerade in die IT, mit dem Ziel, Fachinformatiker für Systemintegration zu werden.</p>
+          <p>Technik verstehen, ausprobieren und Probleme Schritt für Schritt lösen: Das treibt mich dabei jeden Tag an.</p>
+          <ul class="stats">
+            <li><span class="stat-num" aria-hidden="true" data-v="09">09</span><span class="sr">09</span><span class="stat-label">Jahre Bäckerhandwerk</span></li>
+            <li><span class="stat-num" aria-hidden="true" data-v="inf"><svg class="inf" viewBox="0 0 24 16" aria-hidden="true"><path d="M12 8C10 5.3 8 4 6 4a4 4 0 0 0 0 8c2 0 4-1.3 6-4zm0 0c2 2.7 4 4 6 4a4 4 0 0 0 0-8c-2 0-4 1.3-6 4z"/></svg></span><span class="sr">unendlich</span><span class="stat-label">Interesse an Systemen</span></li>
+            <li><span class="stat-num" aria-hidden="true" data-v="01">01</span><span class="sr">01</span><span class="stat-label">Klare Entscheidung für die IT</span></li>
+          </ul>
+          <div class="intro-line"></div>
+          <div class="intro-links">
+            <a href="https://github.com/tonikiesel" target="_blank" rel="noopener" aria-label="Toni Kiesel auf GitHub">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="intro-photo"><span class="orbit" aria-hidden="true"><i></i></span><span class="orbit glow" aria-hidden="true"><i></i></span><img src="toni.jpg" width="600" height="600" alt="Porträt von Toni Kiesel"></div>
+      </div>
+    </section>
+
+    <header class="profile" id="profil">
+      <div class="profile-head">
+        <p class="eyebrow profile-eb"><span class="eb-no">01</span><span class="eb-sep" aria-hidden="true"></span>Profil</p>
+        <h2 class="h1like">Über mich</h2>
+        <p class="keywords">Analytisch, lösungsorientiert, detailgenau und gewissenhaft</p>
+      </div>
+
+      <div class="profile-grid">
+        <div class="pcol">
+          <div class="about-frame">
+          <div class="about glass">
+            <div class="photo"><img class="portrait" src="toni.jpg" width="600" height="600" alt="Porträt von Toni Kiesel"></div>
+            <div class="about-text">
+            <p>Nach meiner Ausbildung zum Bäcker habe ich mehrere Jahre als Bäckergeselle gearbeitet. Dort habe ich gelernt, präzise zu arbeiten, Abläufe zu koordinieren und auch unter Zeitdruck auf Qualität zu achten. Das hat mich detailgenau und gewissenhaft gemacht.</p>
+            <p>Diese Arbeitsweise nehme ich mit in die IT. Wenn technisch etwas nicht funktioniert, gehe ich analytisch vor: Ich suche die Ursache, prüfe Schritt für Schritt und arbeite lösungsorientiert, bis alles wieder läuft. Im Freundes- und Familienkreis bin ich oft der Erste, den man bei technischen Problemen fragt.</p>
+            <p>In meiner Freizeit konfiguriere ich gern verschiedene Systeme und schraube auch mal daran herum, um zu verstehen, wie alles zusammenhängt. Ich habe eine Liebe für Hardware und mit Python erste kleine Skripte geschrieben. Diese Neugier möchte ich in der Systemintegration zum Beruf machen.</p>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section id="kenntnisse">
+      <div class="sec-head">
+        <p class="eyebrow"><span class="eb-no">02</span><span class="eb-sep" aria-hidden="true"></span>Stand der Dinge</p>
+        <h2 class="big-title">Was ich kann. Und was <br>mir noch <em>fehlt</em>.</h2>
+      </div>
+      <div class="skill-grid">
+        <div class="glass skill-card">
+          <p class="tag"><span class="tag-dot ok" aria-hidden="true"></span>Schon eingetaucht</p>
+          <ul class="chips">
+            <li><b>Netzwerktechnik</b><small>Protokolle · Datenübertragung</small></li>
+            <li><b>IT-Sicherheit</b><small>Verschlüsselung · Schutzmaßnahmen</small></li>
+            <li><b>Datensicherung</b><small>Backups · Wiederherstellung</small></li>
+            <li><b>Programmierlogik</b><small>Algorithmen · Datenstrukturen</small></li>
+            <li><b>Python</b><small>Erste Skripte</small></li>
+            <li><b>HTML, CSS &amp; JavaScript</b><small>Erste Erfahrungen</small></li>
+            <li><b>Hardware</b><small>Aufbau · Fehlersuche</small></li>
+            <li><b>DNS &amp; Hosting</b><small>Eigene Domain · GitHub Pages</small></li>
+            <li><b>Git</b><small>Versionsverwaltung</small></li>
+          </ul>
+          <p class="skill-note">Stand Oktober 2026. Die Umschulung läuft bis 2028, die Liste wächst also noch. Wie tief ich in einem Thema stecke, zeige ich dir gern im Gespräch.</p>
+        </div>
+        <div class="glass skill-card open-card">
+          <p class="tag"><span class="tag-dot open" aria-hidden="true"></span>Noch offen</p>
+          <h3>Dein Netzwerk.</h3>
+          <p>Deine Systeme, eure Abläufe und die Geschichte hinter dem einen Server, den keiner anfassen darf. Das steht in keinem Lehrbuch. Genau dafür ist ein Praktikum da.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="projekte">
+      <div class="sec-head">
+        <p class="eyebrow"><span class="eb-no">03</span><span class="eb-sep" aria-hidden="true"></span>Projekte</p>
+        <h2 class="big-title">Ausprobiert, gebaut, <br><em>dazugelernt</em>.</h2>
+      </div>
+      <div class="about-frame proj-frame">
+      <div class="glass proj-card">
+      <div class="proj-grid">
+        <div class="proj-list">
+      <div class="project">
+        <h3>Diese Website</h3>
+        <p>
+          Eigene Domain mit DNS-Einträgen bei IONOS, gehostet über GitHub Pages mit HTTPS.
+          Änderungen verwalte ich mit Git. Das Kontaktformular läuft über den Drittanbieter Formspree,
+          der die Nachrichten per E-Mail an mich weiterleitet.
+        </p>
+        <p class="proj-honest">
+          Domain, DNS und Hosting habe ich selbst eingerichtet, den Code mit KI-Unterstützung entwickelt
+          und dabei viel über HTML, CSS und JavaScript gelernt.
+        </p>
+      </div>
+      <!-- Weitere Projekte hier als <div class="project"> mit <h3> und <p> ergänzen. -->
+        </div>
+        <div class="term" role="img" aria-label="Nachgestellte Terminal-Ausgabe: DNS-Abfrage der Domain, git push und ein kleines Python-Skript">
+          <div class="term-bar"><i></i><i></i><i></i><span>toni@pc: ~</span></div>
+          <pre id="termOut" aria-hidden="true"></pre>
+          <p class="term-note">Nachgestellter Ablauf – so entsteht diese Seite.</p>
+        </div>
+      </div>
+      </div>
+      </div>
+    </section>
+
+    <section id="lebenslauf">
+      <div class="sec-head">
+        <p class="eyebrow"><span class="eb-no">04</span><span class="eb-sep" aria-hidden="true"></span>Lebenslauf</p>
+        <h2 class="big-title">Vom Backofen <br>in den <em>Serverraum</em>.</h2>
+      </div>
+      <div class="cv">
+      <article class="glass cv-card">
+        <p class="cv-date">Juli 2026 – Juli 2028</p>
+        <h3 class="cv-title">Fachinformatiker für Systemintegration (IHK), Umschulung</h3>
+        <p class="cv-where">bei WBS Training SE, Finsterwalde</p>
+      </article>
+      <article class="glass cv-card">
+        <p class="cv-date">September 2027 – Februar 2028</p>
+        <h3 class="cv-title">Betriebliches (Pflicht-)Praktikum – 6 Monate</h3>
+        <p class="cv-where">in einem Unternehmen mit Ausbildereignung</p>
+      </article>
+      <article class="glass cv-card cv-wide">
+        <p class="cv-date">März 2026 – Mai 2026</p>
+        <h3 class="cv-title">IT-Vorbereitungskurs</h3>
+        <p class="cv-where">bei WBS Training SE, Finsterwalde</p>
+        <ul class="cv-list">
+            <li><span class="h">Grundlagen, Algorithmen und Datenstrukturen:</span><span class="d">Essenzielle Programmierkonzepte, Datenstrukturen und logische Problemlösung</span></li>
+            <li><span class="h">Grundlagen der digitalen Sicherheit:</span><span class="d">Grundwissen über Verschlüsselung, Bedrohung und Schutzmaßnahmen in der IT</span></li>
+            <li><span class="h">Grundlagen der Netzwerktechnik:</span><span class="d">Verständnis von Netzwerkarchitekturen, Protokollen und Datenübertragung</span></li>
+        </ul>
+      </article>
+      <article class="glass cv-card cv-wide">
+        <p class="cv-date">August 2019 – August 2025</p>
+        <h3 class="cv-title">Bäckergeselle</h3>
+        <p class="cv-where">bei Bäckerei Bubner, Doberlug-Kirchhain</p>
+        <ul class="cv-list">
+            <li><span class="d">Verantwortung für die Organisation und Optimierung der Produktionsabläufe</span></li>
+            <li><span class="d">Sicherstellung der Qualität und Frische der Produkte</span></li>
+        </ul>
+      </article>
+      <article class="glass cv-card">
+        <p class="cv-date">August 2016 – August 2019</p>
+        <h3 class="cv-title">Ausbildung zum Bäcker</h3>
+        <p class="cv-where">bei Bäckerei Bubner, Doberlug-Kirchhain</p>
+      </article>
+      </div>
+    </section>
+
+    <section id="warum">
+      <div class="sec-head">
+        <p class="eyebrow"><span class="eb-no">05</span><span class="eb-sep" aria-hidden="true"></span>Warum ein Quereinsteiger</p>
+        <h2 class="big-title">Kein Zufall, sondern <br>eine <em>Entscheidung</em>.</h2>
+      </div>
+      <div class="why-grid">
+        <div class="glass why-card">
+          <p class="why-lead">Neun Jahre Bäckerhandwerk, und dann alles auf Anfang? Genau so. Nicht aus einer Laune heraus, sondern weil ich weiß, wo ich hinwill.</p>
+        </div>
+        <ul class="why-list">
+          <li>
+            <h3>Ich habe es vorher getestet.</h3>
+            <p>Bevor die Umschulung losging, habe ich einen IT-Vorbereitungskurs gemacht und Grundlagen wie Netzwerktechnik und IT-Sicherheit kennengelernt. Danach war klar: Das ist meins.</p>
+          </li>
+          <li>
+            <h3>Ich kenne den Arbeitsalltag.</h3>
+            <p>Pünktlichkeit, Verantwortung, Abläufe im Team koordinieren und unter Zeitdruck trotzdem sauber arbeiten: Das muss mir niemand mehr beibringen. Du kannst dich darauf konzentrieren, mir die Technik zu zeigen.</p>
+          </li>
+          <li>
+            <h3>Technik ist auch mein Hobby.</h3>
+            <p>Auch nach Feierabend lässt mich Technik nicht los. Ich probiere Neues aus, richte Systeme ein und lerne dabei jedes Mal etwas dazu.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="konditionen">
+      <div class="sec-head">
+        <p class="eyebrow"><span class="eb-no">06</span><span class="eb-sep" aria-hidden="true"></span>Konditionen</p>
+        <h2 class="big-title">Was dich das <em>kostet</em>.</h2>
+      </div>
+      <div class="terms-grid">
+        <div class="terms-intro">
+          <p class="terms-lead">Weniger, als du vielleicht denkst. Das Praktikum ist Teil meiner Umschulung bei der WBS Training SE, den Rahmen regelt der Bildungsträger.</p>
+          <div class="glass terms-card">
+            <h3>Sechs Monate Kennenlernen.</h3>
+            <p>Du erlebst einen möglichen künftigen Kollegen im echten Arbeitsalltag, bevor du dich auf irgendetwas festlegen musst.</p>
+          </div>
+        </div>
+        <div class="terms-list">
+          <dl>
+            <div><dt>Vergütung</dt><dd><strong>In der Regel keine.</strong> Das Praktikum gehört zur Umschulung.</dd></div>
+            <div><dt>Versicherung</dt><dd>Läuft in der Regel über den Bildungsträger.</dd></div>
+            <div><dt>Papierkram</dt><dd>Eine Praktikumsvereinbarung mit der WBS. Die Unterlagen bringe ich mit.</dd></div>
+            <div><dt>Zeitraum</dt><dd>Ab <span class="hl">September 2027</span>, Dauer <span class="hl">6 Monate</span></dd></div>
+            <div><dt>Dein Aufwand</dt><dd>Ein ausbildungsberechtigter Betrieb, ein Ansprechpartner, ein Arbeitsplatz und ein Benutzerkonto mit passenden Rechten.</dd></div>
+            <div><dt>Einsatzort</dt><dd>Raum Zwickau</dd></div>
+          </dl>
+          <p class="terms-note">Die genauen Bedingungen legt der Bildungsträger fest. Ich schicke sie dir gern vorab, damit du weißt, worauf du dich einlässt.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="kontakt">
+      <div class="contact-head">
+        <p class="eyebrow"><span class="eb-no">07</span><span class="eb-sep" aria-hidden="true"></span>Kontakt</p>
+        <h2 class="contact-title">Platz im Team frei?<br><em>Ping</em> mich an.</h2>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info">
+          <p>Egal ob Praktikumsplatz, Fragen zu meinem Werdegang oder ein erstes Kennenlernen: Schreib mir einfach über das Formular oder ruf kurz an. Ich melde mich schnell zurück und schicke dir meine vollständigen Unterlagen gern direkt zu.</p>
+          <p>Ab <strong>September 2027</strong> suche ich für sechs Monate ein Team, das mich mitnimmt. Gern auch erst mal auf einen Probetag, damit wir beide sehen, ob es passt.</p>
+          <a class="glass contact-gh" href="https://github.com/tonikiesel" target="_blank" rel="noopener">
+            <span class="contact-gh-icon"><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></span>
+            <span class="contact-gh-text"><strong>GitHub</strong>tonikiesel</span>
+          </a>
+          <a class="glass contact-gh contact-phone" id="phone" tabindex="0" role="button" data-p="64,61,59,59,67,62,67,68,43,59,65,60,43,68,63,54" aria-label="Telefonnummer anzeigen">
+            <span class="contact-gh-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+            <span class="contact-gh-text"><strong>Telefon<span class="copy-hint" aria-hidden="true">Klicken zum Kopieren</span></strong><span class="phone-val">Nummer anzeigen</span><span class="sr" aria-live="polite" id="phoneLive"></span></span>
+          </a>
+        </div>
+        <div class="contact-side">
+        <form class="glass contact-form" id="contactForm" action="https://formspree.io/f/xoejqaqk" method="POST">
+          <div class="field">
+            <label for="cfName">Name <span class="req" aria-hidden="true">*</span></label>
+            <input id="cfName" name="name" type="text" autocomplete="name" placeholder="Max Mustermann" required aria-describedby="cfNameErr">
+            <p class="field-err" id="cfNameErr">Bitte gib deinen Namen an.</p>
+          </div>
+          <div class="field">
+            <label for="cfMail">E-Mail <span class="req" aria-hidden="true">*</span></label>
+            <input id="cfMail" name="email" type="email" autocomplete="email" placeholder="deine@mail.de" required aria-describedby="cfMailErr">
+            <p class="field-err" id="cfMailErr">Bitte gib eine gültige E-Mail-Adresse an.</p>
+          </div>
+          <div class="field">
+            <label for="cfSubject">Betreff</label>
+            <input id="cfSubject" name="_subject" type="text" placeholder="Praktikum, Projekt oder Sonstiges">
+          </div>
+          <div class="field">
+            <label for="cfMsg">Nachricht <span class="req" aria-hidden="true">*</span></label>
+            <textarea id="cfMsg" name="message" rows="5" placeholder="Worum geht es? Schreib mir gern ein paar Zeilen." required aria-describedby="cfMsgErr"></textarea>
+            <p class="field-err" id="cfMsgErr">Bitte schreib mir eine kurze Nachricht.</p>
+          </div>
+          <div class="hp" aria-hidden="true"><label for="cfHp">Dieses Feld bitte leer lassen</label><input id="cfHp" type="text" name="_gotcha" tabindex="-1" autocomplete="off"></div>
+          <div class="form-foot">
+            <span class="form-req"><span aria-hidden="true">*</span> Pflichtfeld</span>
+            <button class="btn" type="submit">Nachricht senden</button>
+          </div>
+          <p class="form-note">Deine Angaben werden über den Dienst Formspree an mich weitergeleitet und nur genutzt, um dir zu antworten.</p>
+          <p class="form-status" id="cfStatus" role="status" aria-live="polite"></p>
+        </form>
+        <button class="to-top" type="button" id="toTop" aria-label="Zurück zum Anfang" title="Zurück zum Anfang"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg></button>
+        </div>
+      </div>
+    </section>
+
+    <aside class="glass revisit" aria-label="Hinweis für wiederkehrende Besucher">
+      <span class="revisit-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
+      <p class="revisit-text"><strong>Du schaust öfter vorbei?</strong>Über das Zahnrad oben rechts kannst du einstellen, dass du beim nächsten Besuch direkt im Profil landest.</p>
+      <button class="linkbtn" type="button" data-open-settings>Einstellungen öffnen</button>
+    </aside>
+    <details class="legal" id="impressum">
+      <summary>
+        <span>Impressum &amp; Datenschutz</span>
+        <svg class="legal-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg>
+      </summary>
+      <div class="legal-body"><div class="legal-inner">
+        <div class="legal-grid">
+          <div>
+            <h3>Angaben gemäß § 5 DDG</h3>
+            <p>Toni Kiesel<br>Am Langen Hacken 90<br>03238 Finsterwalde<br>Deutschland</p>
+            <p>E-Mail: <a href="mailto:kiesel.99@protonmail.com">kiesel.99@protonmail.com</a></p>
+          </div>
+          <div>
+            <h3>Hosting</h3>
+            <p>Diese Website wird über <strong>GitHub Pages</strong> (GitHub, Inc., USA) bereitgestellt. Beim Aufruf der Website werden technisch notwendige Verbindungsdaten, insbesondere die IP-Adresse, verarbeitet, um die Seite auszuliefern und vor Missbrauch zu schützen.</p>
+          </div>
+          <div>
+            <h3>Kontaktformular</h3>
+            <p>Anfragen über das Kontaktformular werden über den Dienstleister <strong>Formspree</strong> (Formspree, Inc., USA) verarbeitet und per E-Mail weitergeleitet. Die übermittelten Angaben (Name, E-Mail-Adresse, Betreff, Nachricht) werden ausschließlich zur Bearbeitung der Anfrage verwendet und nicht an Dritte weitergegeben.</p>
+          </div>
+          <div>
+            <h3>Cookies und lokale Speicherung</h3>
+            <p>Diese Website setzt keine Cookies und verwendet keine Analyse- oder Werbedienste. Schriftarten und Bilder werden direkt von dieser Website geladen.</p>
+            <p>Werden über das Einstellungsmenü (Zahnrad) Anpassungen vorgenommen, wird die Auswahl im lokalen Speicher des Browsers (Local Storage) abgelegt, damit sie beim nächsten Besuch erhalten bleibt. Diese Daten verbleiben auf dem Endgerät und werden nicht übertragen. Sie lassen sich jederzeit über das Einstellungsmenü oder die Browsereinstellungen löschen.</p>
+          </div>
+        </div>
+        <p class="legal-foot">Rechtsgrundlage der Verarbeitung ist Art. 6 Abs. 1 lit. b und f DSGVO, für die lokale Speicherung § 25 Abs. 2 Nr. 2 TDDDG. Betroffene Personen haben das Recht auf Auskunft, Berichtigung, Löschung und Einschränkung der Verarbeitung, das Recht auf Widerspruch sowie das Recht auf Beschwerde bei einer Datenschutz-Aufsichtsbehörde.</p>
+      </div></div>
+    </details>
+    <footer>
+      <p class="status-line"><span class="tb-dot" aria-hidden="true"></span><span>praktikant-toni · Status: wartet auf deine Antwort</span></p>
+      <p class="copy">© Toni Kiesel</p>
+    </footer>
+  </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
