@@ -208,7 +208,7 @@ h1, h2.h1like {
 .profile-grid { display: block; }
 .pcol .about-frame { margin-bottom: 1.8rem; }
 /* Foto links im Kasten, Text rechts, beides in einem Rahmen */
-.photo { position: relative; z-index: 1; min-height: 20rem; }
+.photo { position: relative; z-index: 1; align-self: center; aspect-ratio: 4 / 5; min-height: 0; }
 .photo .portrait { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; object-position: 50% 28%; border: 3px solid var(--accent); border-radius: 10px; outline: none; transform: none; }
 .about-text { align-self: center; padding: 1.4rem 2rem 1rem 0; position: relative; z-index: 1; }
 .name { margin: 0; font-size: clamp(2.2rem, 5.5vw, 3.4rem); line-height: 1.05; font-weight: 800; letter-spacing: -0.03em; }
@@ -701,7 +701,7 @@ html.no-motion { scroll-behavior: auto; }
   .intro-photo { order: -1; width: 11rem; }
   .intro-links { justify-content: flex-start; }
   .about { grid-template-columns: 1fr; gap: 1.1rem; padding: .5rem; }
-  .photo { min-height: 0; height: 16rem; }
+  .photo { justify-self: center; width: min(100%, 18rem); aspect-ratio: 1 / 1; }
   .about-text { padding: 0 .9rem .8rem; }
   .proj-card { padding: 1.3rem 1.2rem; }
   .cv { row-gap: 3rem; }
@@ -771,3 +771,8 @@ html.light .contact-gh-icon { border-color: rgba(29,104,201,.3); }
 html.light .coolant { background: linear-gradient(rgba(70,150,215,0) 0, rgba(70,150,215,.9) 22vh, #3f8fd0 40vh, #1f5f99 100%); }
 html.light .ring::before { border-color: rgba(20,120,220,.95); box-shadow: 0 0 8px rgba(20,120,220,.45), inset 0 0 6px rgba(20,120,220,.25); }
 html.light .ring.link::before { border-color: rgba(220,110,10,.95); box-shadow: 0 0 10px rgba(220,110,10,.5); }
+
+/* Kleine Handys: Menüs über die ganze Breite statt am Zahnrad ausgerichtet */
+@media (max-width: 520px) {
+  .settings { position: fixed; left: .75rem; right: .75rem; top: calc(3.25rem + .5rem); width: auto; }
+}
